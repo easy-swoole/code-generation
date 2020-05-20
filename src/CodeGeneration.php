@@ -6,13 +6,13 @@
  * Time: 16:41
  */
 
-namespace CodeGeneration;
+namespace EasySwoole\CodeGeneration;
 
 
-use CodeGeneration\ControllerGeneration\ControllerConfig;
-use CodeGeneration\ControllerGeneration\ControllerGeneration;
-use CodeGeneration\ModelGeneration\ModelClassGeneration;
-use CodeGeneration\ModelGeneration\ModelConfig;
+use EasySwoole\CodeGeneration\ControllerGeneration\ControllerConfig;
+use EasySwoole\CodeGeneration\ControllerGeneration\ControllerGeneration;
+use EasySwoole\CodeGeneration\ModelGeneration\ModelClassGeneration;
+use EasySwoole\CodeGeneration\ModelGeneration\ModelConfig;
 use EasySwoole\HttpAnnotation\AnnotationController;
 use EasySwoole\ORM\Db\Connection;
 

@@ -6,11 +6,11 @@
  * Time: 10:49
  */
 
-namespace CodeGeneration\ModelGeneration;
+namespace EasySwoole\CodeGeneration\ModelGeneration;
 
-use CodeGeneration\CodeGeneration\ClassGeneration;
-use CodeGeneration\ModelGeneration\Method\GetList;
-use CodeGeneration\Unity\Unity;
+use EasySwoole\CodeGeneration\CodeGeneration\ClassGeneration;
+use EasySwoole\CodeGeneration\ModelGeneration\Method\GetList;
+use EasySwoole\CodeGeneration\Unity\Unity;
 use Nette\PhpGenerator\ClassType;
 
 class ModelClassGeneration extends ClassGeneration

@@ -6,16 +6,16 @@
  * Time: 16:08
  */
 
-namespace CodeGeneration\ControllerGeneration;
+namespace EasySwoole\CodeGeneration\ControllerGeneration;
 
 
-use CodeGeneration\CodeGeneration\ClassGeneration;
-use CodeGeneration\CodeGeneration\MethodAbstract;
-use CodeGeneration\ControllerGeneration\Method\Add;
-use CodeGeneration\ControllerGeneration\Method\Delete;
-use CodeGeneration\ControllerGeneration\Method\GetList;
-use CodeGeneration\ControllerGeneration\Method\GetOne;
-use CodeGeneration\ControllerGeneration\Method\Update;
+use EasySwoole\CodeGeneration\CodeGeneration\ClassGeneration;
+use EasySwoole\CodeGeneration\CodeGeneration\MethodAbstract;
+use EasySwoole\CodeGeneration\ControllerGeneration\Method\Add;
+use EasySwoole\CodeGeneration\ControllerGeneration\Method\Delete;
+use EasySwoole\CodeGeneration\ControllerGeneration\Method\GetList;
+use EasySwoole\CodeGeneration\ControllerGeneration\Method\GetOne;
+use EasySwoole\CodeGeneration\ControllerGeneration\Method\Update;
 use EasySwoole\Http\Message\Status;
 use EasySwoole\HttpAnnotation\AnnotationTag\DocTag\Api;
 use EasySwoole\HttpAnnotation\AnnotationTag\DocTag\ApiFail;

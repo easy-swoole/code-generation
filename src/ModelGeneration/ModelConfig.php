@@ -6,10 +6,10 @@
  * Time: 10:51
  */
 
-namespace CodeGeneration\ModelGeneration;
+namespace EasySwoole\CodeGeneration\ModelGeneration;
 
 
-use CodeGeneration\CodeGeneration\Config;
+use EasySwoole\CodeGeneration\CodeGeneration\Config;
 use EasySwoole\ORM\Utility\Schema\Table;
 use EasySwoole\Utility\Str;
 

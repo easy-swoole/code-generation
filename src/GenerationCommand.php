@@ -6,7 +6,7 @@
  * Time: 16:51
  */
 
-namespace CodeGeneration;
+namespace EasySwoole\CodeGeneration;
 
 
 use EasySwoole\Component\Timer;

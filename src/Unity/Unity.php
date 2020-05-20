@@ -6,7 +6,7 @@
  * Time: 下午9:05
  */
 
-namespace CodeGeneration\Unity;
+namespace EasySwoole\CodeGeneration\Unity;
 
 
 use EasySwoole\ORM\Utility\Schema\Table;

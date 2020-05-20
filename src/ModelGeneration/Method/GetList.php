@@ -6,10 +6,10 @@
  * Time: 11:03
  */
 
-namespace CodeGeneration\ModelGeneration\Method;
+namespace EasySwoole\CodeGeneration\ModelGeneration\Method;
 
 
-use CodeGeneration\CodeGeneration\MethodAbstract;
+use EasySwoole\CodeGeneration\CodeGeneration\MethodAbstract;
 
 class GetList extends MethodAbstract
 {

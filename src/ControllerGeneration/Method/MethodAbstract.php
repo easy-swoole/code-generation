@@ -6,12 +6,12 @@
  * Time: 上午10:51
  */
 
-namespace CodeGeneration\ControllerGeneration\Method;
+namespace EasySwoole\CodeGeneration\ControllerGeneration\Method;
 
 
-use CodeGeneration\CodeGeneration\ClassGeneration;
-use CodeGeneration\ControllerGeneration\ControllerConfig;
-use CodeGeneration\ControllerGeneration\ControllerGeneration;
+use EasySwoole\CodeGeneration\CodeGeneration\ClassGeneration;
+use EasySwoole\CodeGeneration\ControllerGeneration\ControllerConfig;
+use EasySwoole\CodeGeneration\ControllerGeneration\ControllerGeneration;
 use EasySwoole\HttpAnnotation\AnnotationTag\Param;
 use EasySwoole\ORM\Utility\Schema\Column;
 

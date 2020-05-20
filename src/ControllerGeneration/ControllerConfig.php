@@ -6,10 +6,10 @@
  * Time: 16:05
  */
 
-namespace CodeGeneration\ControllerGeneration;
+namespace EasySwoole\CodeGeneration\ControllerGeneration;
 
-use CodeGeneration\ModelGeneration\ModelClassGeneration;
-use CodeGeneration\ModelGeneration\ModelConfig;
+use EasySwoole\CodeGeneration\ModelGeneration\ModelClassGeneration;
+use EasySwoole\CodeGeneration\ModelGeneration\ModelConfig;
 use EasySwoole\HttpAnnotation\AnnotationController;
 use EasySwoole\ORM\Utility\Schema\Table;
 

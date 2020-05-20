@@ -6,7 +6,7 @@
  * Time: 上午11:15
  */
 
-namespace CodeGeneration\ControllerGeneration\Method;
+namespace EasySwoole\CodeGeneration\ControllerGeneration\Method;
 
 
 class GetList extends MethodAbstract

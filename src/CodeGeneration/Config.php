@@ -6,7 +6,7 @@
  * Time: 10:18
  */
 
-namespace CodeGeneration\CodeGeneration;
+namespace EasySwoole\CodeGeneration\CodeGeneration;
 class Config
 {
     protected $extendClass;//继承的基类

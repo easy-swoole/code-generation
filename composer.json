@@ -1,5 +1,5 @@
 {
-    "name": "tioncico/code-generation",
+    "name": "easyswoole/code-generation",
     "license": "Apache-2.0",
     "require": {
         "easyswoole/easyswoole": "^3.3",
@@ -18,14 +18,14 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "CodeGeneration\\": "src/",
+            "EasySwoole\\CodeGeneration\\": "src/",
             "App\\": "App/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "CodeGeneration\\Test\\": "Tests/",
-            "CodeGeneration\\UnitTest\\": "UnitTest/",
+            "EasySwoole\\CodeGeneration\\Test\\": "Tests/",
+            "EasySwoole\\CodeGeneration\\UnitTest\\": "UnitTest/",
             "App\\": "App/",
             "UnitTest\\": "UnitTest/"
         }
