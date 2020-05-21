@@ -22,7 +22,7 @@ class Unity
         if (isset($composerJson['autoload-dev']['psr-4']["{$namespace}\\"])) {
             return $composerJson['autoload-dev']['psr-4']["{$namespace}\\"];
         }
-        return $rootPath;
+        return "$namespace/";
     }
 
     /**
