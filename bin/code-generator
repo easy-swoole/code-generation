@@ -1,0 +1,10 @@
+#!/usr/bin/env php
+<?php
+
+require_once getcwd().'/vendor/autoload.php';
+require_once getcwd().'/bootstrap.php';
+$array = $argv;
+array_shift($array);
+$command = new \EasySwoole\CodeGeneration\GenerationCommand();
+$result = $command->exec($array);
+echo $result;
