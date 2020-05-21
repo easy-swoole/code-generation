@@ -12,6 +12,7 @@ namespace EasySwoole\CodeGeneration;
 use EasySwoole\Component\Timer;
 use EasySwoole\EasySwoole\Command\CommandInterface;
 use EasySwoole\EasySwoole\Command\Utility;
+use EasySwoole\Utility\ArrayToTextTable;
 use Swoole\Coroutine\Scheduler;
 
 class GenerationCommand implements CommandInterface
@@ -28,11 +29,8 @@ class GenerationCommand implements CommandInterface
         $run->add(function () use (&$ret, $args) {
             $action = array_shift($args);
             switch ($action) {
-                case 'model':
-                    $result = $this->model($args);
-                    break;
-                case 'controller':
-                    $result = $this->controller($args);
+                case 'init':
+                    $result = $this->init($args);
                     break;
                 case 'all':
                     $result = $this->all($args);
@@ -48,46 +46,13 @@ class GenerationCommand implements CommandInterface
         return $ret;
     }
 
-    function model($args)
+    function init($args)
     {
-        $mysqlConfig = new \EasySwoole\ORM\Db\Config(\EasySwoole\EasySwoole\Config::getInstance()->getConf('MYSQL'));
-        $connection = new \EasySwoole\ORM\Db\Connection($mysqlConfig);
-        $tableName = array_shift($args);
-        $codeGeneration = new CodeGeneration($tableName, $connection);
-
-        $modelPath = array_shift($args);
-        $tablePre = array_shift($args);
-        if (empty($tablePre)) {
-            $tablePre = '';
-        }
-        $result = $codeGeneration->generationModel($modelPath, $tablePre);
-        if ($result) {
-            return "generation model success:{$result}";
-        } else {
-            return "generation model fail\n";
-        }
-    }
-
-    function controller($args)
-    {
-        $mysqlConfig = new \EasySwoole\ORM\Db\Config(\EasySwoole\EasySwoole\Config::getInstance()->getConf('MYSQL'));
-        $connection = new \EasySwoole\ORM\Db\Connection($mysqlConfig);
-        $tableName = array_shift($args);
-        $codeGeneration = new CodeGeneration($tableName, $connection);
-
-        $modelPath = array_shift($args);
-        $controllerPath = array_shift($args);
-        $tablePre = array_shift($args);
-        if (empty($tablePre)) {
-            $tablePre = '';
-        }
-        $modelGeneration = $codeGeneration->getModelGeneration($modelPath, $tablePre);
-        $result = $codeGeneration->generationController($controllerPath, $modelGeneration, $tablePre);
-        if ($result) {
-            return "generation controller success:{$result}";
-        } else {
-            return "generation controller fail";
-        }
+        $result = [];
+        $result[0] = ['className' => 'Model', 'filePath' => $this->generationBaseModel()];
+        $result[1] = ['className' => 'Controller', 'filePath' => $this->generationBaseController()];
+        $result[2] = ['className' => 'UnitTest', 'filePath' => $this->generationBaseUnitTest()];
+        return new ArrayToTextTable($result);
     }
 
     function all($args)
@@ -95,29 +60,27 @@ class GenerationCommand implements CommandInterface
         $mysqlConfig = new \EasySwoole\ORM\Db\Config(\EasySwoole\EasySwoole\Config::getInstance()->getConf('MYSQL'));
         $connection = new \EasySwoole\ORM\Db\Connection($mysqlConfig);
         $tableName = array_shift($args);
-        $codeGeneration = new CodeGeneration($tableName, $connection);
-
+        if (empty($tableName)) {
+            return "table not empty";
+        }
         $modelPath = array_shift($args);
         $controllerPath = array_shift($args);
-        $tablePre = array_shift($args);
-        if (empty($tablePre)) {
-            $tablePre = '';
+        $unitTestPath = array_shift($args);
+        $codeGeneration = new CodeGeneration($tableName, $connection);
+        $result = [];
+        if ($modelPath) {
+            $filePath = $codeGeneration->generationModel($modelPath);
+            $result[] = ['className' => 'Model', "filePath"=>$filePath];
         }
-        $str = "";
-        $result = $codeGeneration->generationModel($modelPath, $tablePre);
-        if ($result) {
-            $str .= "generation model success:{$result}\n";
-        } else {
-            $str .= "generation model fail\n";
+        if ($controllerPath) {
+            $filePath = $codeGeneration->generationController($controllerPath);
+            $result[] = ['className' => 'controller', "filePath"=>$filePath];
         }
-        $modelGeneration = $codeGeneration->getModelGeneration($modelPath, $tablePre);
-        $result = $codeGeneration->generationController($controllerPath, $modelGeneration, $tablePre);
-        if ($result) {
-            $str .= "generation controller success:{$result}\n";
-        } else {
-            $str .= "generation controller fail";
+        if ($unitTestPath) {
+            $filePath = $codeGeneration->generationUnitTest($unitTestPath);
+            $result[] = ['className' => 'UnitTest', "filePath"=>$filePath];
         }
-        return $str;
+        return new ArrayToTextTable($result);
     }
 
     public function help(array $args): ?string
@@ -125,11 +88,28 @@ class GenerationCommand implements CommandInterface
         //输出logo
         $logo = Utility::easySwooleLog();
         return $logo . "
-php easyswoole generation model tableName modelPath [tablePre]
-php easyswoole generation controller tableName modelPath controllerPath [tablePre]
-php easyswoole generation all tableName modelPath controllerPath [tablePre]
+php easyswoole generation all tableName modelPath [controllerPath] [unitTestPath]
+php easyswoole generation init
 ";
     }
 
+
+    function generationBaseController()
+    {
+        $generation = new \EasySwoole\CodeGeneration\InitBaseClass\Controller\ControllerGeneration();
+        return $generation->generate();
+    }
+
+    function generationBaseUnitTest()
+    {
+        $generation = new \EasySwoole\CodeGeneration\InitBaseClass\UnitTest\UnitTestGeneration();
+        return $generation->generate();
+    }
+
+    function generationBaseModel()
+    {
+        $generation = new \EasySwoole\CodeGeneration\InitBaseClass\Model\ModelGeneration();
+        return $generation->generate();
+    }
 
 }
