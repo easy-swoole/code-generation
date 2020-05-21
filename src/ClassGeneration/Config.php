@@ -7,6 +7,7 @@
  */
 
 namespace EasySwoole\CodeGeneration\ClassGeneration;
+
 use EasySwoole\CodeGeneration\Unity\Unity;
 
 class Config
@@ -15,6 +16,7 @@ class Config
     protected $directory;//生成的目录
     protected $namespace;//生成的命名空间
     protected $className;
+    protected $rootPath;//项目根目录
 
     public function __construct($className, $nameSpace = "\\App")
     {
@@ -29,10 +31,6 @@ class Config
     public function setNamespace($namespace): void
     {
         $this->namespace = $namespace;
-        //设置下基础目录
-        $pathArr = explode('\\', $namespace);
-        $app = array_shift($pathArr);
-        $this->setDirectory(EASYSWOOLE_ROOT . '/' . Unity::getNamespacePath($app) . implode('/', $pathArr));
     }
 
     /**
@@ -48,6 +46,12 @@ class Config
      */
     public function getDirectory()
     {
+        if (empty($this->directory)&&!empty($this->getNamespace())){
+            //设置下基础目录
+            $pathArr = explode('\\', $this->getNamespace());
+            $app = array_shift($pathArr);
+            $this->setDirectory($this->getRootPath() . '/' . Unity::getNamespacePath($this->getRootPath(), $app) . implode('/', $pathArr));
+        }
         return $this->directory;
     }
 
@@ -73,9 +77,6 @@ class Config
      */
     public function setExtendClass($extendClass): void
     {
-        if ($extendClass=='App\HttpController\Api\User'){
-            throw  new \Exception('11');
-        }
         $this->extendClass = $extendClass;
     }
 
@@ -93,5 +94,24 @@ class Config
     public function setClassName($className): void
     {
         $this->className = $className;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRootPath()
+    {
+        if (empty($this->rootPath)){
+            $this->rootPath = getcwd();
+        }
+        return $this->rootPath;
+    }
+
+    /**
+     * @param mixed $rootPath
+     */
+    public function setRootPath($rootPath): void
+    {
+        $this->rootPath = $rootPath;
     }
 }

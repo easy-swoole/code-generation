@@ -13,9 +13,9 @@ use EasySwoole\ORM\Utility\Schema\Table;
 
 class Unity
 {
-    static function getNamespacePath($namespace)
+    static function getNamespacePath($rootPath,$namespace)
     {
-        $composerJson = json_decode(file_get_contents(EASYSWOOLE_ROOT . '/composer.json'), true);
+        $composerJson = json_decode(file_get_contents($rootPath . '/composer.json'), true);
         return $composerJson['autoload']['psr-4']["{$namespace}\\"] ?? $composerJson['autoload-dev']['psr-4']["{$namespace}\\"];
     }
 

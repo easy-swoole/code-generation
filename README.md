@@ -57,15 +57,51 @@ go(function () {
 ## 命令行使用.
 由于命令行特性,命令行功能支持并不完善,如果需要体验全部功能,请使用 `EasySwoole\CodeGeneration\CodeGeneration` 生成,或参考`EasySwoole\CodeGeneration\CodeGeneration`代码生成.
 ### 注册命令
-在`bootstrap事件`注册command:
+在`bootstrap事件`Di注入配置项:
 ```php
 <?php
-\EasySwoole\EasySwoole\Command\CommandContainer::getInstance()->set(new \EasySwoole\CodeGeneration\GenerationCommand());
+/**
+ * Created by PhpStorm.
+ * User: tioncico
+ * Date: 2020-05-21
+ * Time: 11:20
+ */
+
+\EasySwoole\EasySwoole\Core::getInstance()->initialize();
+$mysqlConfig = new \EasySwoole\ORM\Db\Config(\EasySwoole\EasySwoole\Config::getInstance()->getConf('MYSQL'));
+//获取连接
+$connection = new \EasySwoole\ORM\Db\Connection($mysqlConfig);
+//注入mysql连接
+\EasySwoole\Component\Di::getInstance()->set('CodeGeneration.connection',$connection);
+//直接注入mysql配置对象
+\EasySwoole\Component\Di::getInstance()->set('CodeGeneration.connection',$mysqlConfig);
+//直接注入mysql配置项
+//\EasySwoole\Component\Di::getInstance()->set('CodeGeneration.connection',\EasySwoole\EasySwoole\Config::getInstance()->getConf('MYSQL'));
+
+//注入执行目录项,后面的为默认值,initClass不能通过注入改变目录
+\EasySwoole\Component\Di::getInstance()->set('CodeGeneration.modelBaseNameSpace',"App\\Model");
+\EasySwoole\Component\Di::getInstance()->set('CodeGeneration.controllerBaseNameSpace',"App\\HttpController");
+\EasySwoole\Component\Di::getInstance()->set('CodeGeneration.unitTestBaseNameSpace',"UnitTest");
+\EasySwoole\Component\Di::getInstance()->set('CodeGeneration.rootPath',getcwd());
+
 ```
 即可使用命令生成.  
 ```bash
-php easyswoole generation all user_list \\User \\Api\\\User \\User
-php easyswoole generation init
+php ./bin/code-generator 
+  ______                          _____                              _
+ |  ____|                        / ____|                            | |
+ | |__      __ _   ___   _   _  | (___   __      __   ___     ___   | |   ___
+ |  __|    / _` | / __| | | | |  \___ \  \ \ /\ / /  / _ \   / _ \  | |  / _ \
+ | |____  | (_| | \__ \ | |_| |  ____) |  \ V  V /  | (_) | | (_) | | | |  __/
+ |______|  \__,_| |___/  \__, | |_____/    \_/\_/    \___/   \___/  |_|  \___|
+                          __/ |
+                         |___/
+
+php ./bin/code-generator all tableName modelPath [controllerPath] [unitTestPath]
+php ./bin/code-generator init
+
+php ./bin/code-generator all user_list \\User \\Api\\\User \\User
+
 ```
 
 
