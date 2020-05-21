@@ -9,7 +9,7 @@
 namespace EasySwoole\CodeGeneration\ModelGeneration;
 
 
-use EasySwoole\CodeGeneration\CodeGeneration\Config;
+use EasySwoole\CodeGeneration\ClassGeneration\Config;
 use EasySwoole\ORM\Utility\Schema\Table;
 use EasySwoole\Utility\Str;
 

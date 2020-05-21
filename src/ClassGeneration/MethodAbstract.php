@@ -6,7 +6,7 @@
  * Time: 10:38
  */
 
-namespace EasySwoole\CodeGeneration\CodeGeneration;
+namespace EasySwoole\CodeGeneration\ClassGeneration;
 
 
 abstract class MethodAbstract

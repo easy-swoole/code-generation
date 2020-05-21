@@ -9,13 +9,12 @@
 namespace EasySwoole\CodeGeneration\ControllerGeneration\Method;
 
 
-use EasySwoole\CodeGeneration\CodeGeneration\ClassGeneration;
 use EasySwoole\CodeGeneration\ControllerGeneration\ControllerConfig;
 use EasySwoole\CodeGeneration\ControllerGeneration\ControllerGeneration;
 use EasySwoole\HttpAnnotation\AnnotationTag\Param;
 use EasySwoole\ORM\Utility\Schema\Column;
 
-abstract class MethodAbstract extends \CodeGeneration\CodeGeneration\MethodAbstract
+abstract class MethodAbstract extends \EasySwoole\CodeGeneration\ClassGeneration\MethodAbstract
 {
     /**
      * @var \Nette\PhpGenerator\Method $method

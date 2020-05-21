@@ -39,7 +39,7 @@ class CodeGeneration
 
     function getControllerGeneration(ModelClassGeneration $modelGeneration, $path, $tablePre = '', $extendClass = AnnotationController::class): ControllerGeneration
     {
-        $controllerConfig = new ControllerConfig($modelGeneration, $this->schemaInfo, $tablePre, "App\\HttpController{$path}", $extendClass);
+        $controllerConfig = new ControllerConfig($modelGeneration->getConfig()->getNamespace() . '\\' . $modelGeneration->getClassName(), $this->schemaInfo, $tablePre, "App\\HttpController{$path}", $extendClass);
         $controllerGeneration = new ControllerGeneration($controllerConfig);
         return $controllerGeneration;
     }
@@ -54,7 +54,7 @@ class CodeGeneration
     function generationController($path, ?ModelClassGeneration $modelGeneration = null, $tablePre = '', $extendClass = AnnotationController::class)
     {
         $modelGeneration = $modelGeneration ?? $this->modelGeneration;
-        $controllerGeneration = $this->getControllerGeneration($modelGeneration, $path, $tablePre,  $extendClass);
+        $controllerGeneration = $this->getControllerGeneration($modelGeneration, $path, $tablePre, $extendClass);
         $result = $controllerGeneration->generate();
         return $result;
     }

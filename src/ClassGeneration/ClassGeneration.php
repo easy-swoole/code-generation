@@ -6,7 +6,7 @@
  * Time: 10:19
  */
 
-namespace EasySwoole\CodeGeneration\CodeGeneration;
+namespace EasySwoole\CodeGeneration\ClassGeneration;
 
 
 use EasySwoole\Utility\File;

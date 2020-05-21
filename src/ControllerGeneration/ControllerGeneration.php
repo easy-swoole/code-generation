@@ -9,8 +9,8 @@
 namespace EasySwoole\CodeGeneration\ControllerGeneration;
 
 
-use EasySwoole\CodeGeneration\CodeGeneration\ClassGeneration;
-use EasySwoole\CodeGeneration\CodeGeneration\MethodAbstract;
+use EasySwoole\CodeGeneration\ClassGeneration\ClassGeneration;
+use EasySwoole\CodeGeneration\ClassGeneration\MethodAbstract;
 use EasySwoole\CodeGeneration\ControllerGeneration\Method\Add;
 use EasySwoole\CodeGeneration\ControllerGeneration\Method\Delete;
 use EasySwoole\CodeGeneration\ControllerGeneration\Method\GetList;

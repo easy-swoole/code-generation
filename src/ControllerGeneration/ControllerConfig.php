@@ -26,9 +26,9 @@ class ControllerConfig extends ModelConfig
     ];//文件名生成时,忽略的字符串(list,log等)
     protected $realTableName;//表(生成的文件)真实名称
 
-    public function __construct(ModelClassGeneration $modelGeneration, Table $schemaInfo, $tablePre = '', $nameSpace = "App\\HttpController", $extendClass = AnnotationController::class)
+    public function __construct(string $modelClass, Table $schemaInfo, $tablePre = '', $nameSpace = "App\\HttpController", $extendClass = AnnotationController::class)
     {
-        $this->setModelClass($modelGeneration->getConfig()->getNamespace().'\\'.$modelGeneration->getClassName());
+        $this->setModelClass($modelClass);
         $this->setTable($schemaInfo);
         $this->setTablePre($tablePre);
         $this->setNamespace($nameSpace);

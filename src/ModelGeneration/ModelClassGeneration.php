@@ -8,7 +8,7 @@
 
 namespace EasySwoole\CodeGeneration\ModelGeneration;
 
-use EasySwoole\CodeGeneration\CodeGeneration\ClassGeneration;
+use EasySwoole\CodeGeneration\ClassGeneration\ClassGeneration;
 use EasySwoole\CodeGeneration\ModelGeneration\Method\GetList;
 use EasySwoole\CodeGeneration\Unity\Unity;
 use Nette\PhpGenerator\ClassType;

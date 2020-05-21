@@ -6,7 +6,9 @@
  * Time: 10:18
  */
 
-namespace EasySwoole\CodeGeneration\CodeGeneration;
+namespace EasySwoole\CodeGeneration\ClassGeneration;
+use EasySwoole\CodeGeneration\Unity\Unity;
+
 class Config
 {
     protected $extendClass;//继承的基类
@@ -30,7 +32,7 @@ class Config
         //设置下基础目录
         $pathArr = explode('\\', $namespace);
         $app = array_shift($pathArr);
-        $this->setDirectory(EASYSWOOLE_ROOT . '/' . \CodeGeneration\Unity\Unity::getNamespacePath($app) . implode('/', $pathArr));
+        $this->setDirectory(EASYSWOOLE_ROOT . '/' . Unity::getNamespacePath($app) . implode('/', $pathArr));
     }
 
     /**
