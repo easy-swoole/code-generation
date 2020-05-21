@@ -13,10 +13,16 @@ use EasySwoole\ORM\Utility\Schema\Table;
 
 class Unity
 {
-    static function getNamespacePath($rootPath,$namespace)
+    static function getNamespacePath($rootPath, $namespace)
     {
         $composerJson = json_decode(file_get_contents($rootPath . '/composer.json'), true);
-        return $composerJson['autoload']['psr-4']["{$namespace}\\"] ?? $composerJson['autoload-dev']['psr-4']["{$namespace}\\"];
+        if (isset($composerJson['autoload']['psr-4']["{$namespace}\\"])) {
+            return $composerJson['autoload']['psr-4']["{$namespace}\\"];
+        }
+        if (isset($composerJson['autoload-dev']['psr-4']["{$namespace}\\"])) {
+            return $composerJson['autoload-dev']['psr-4']["{$namespace}\\"];
+        }
+        return $rootPath;
     }
 
     /**
@@ -40,7 +46,7 @@ class Unity
         return $newFieldType;
     }
 
-    static function chunkTableColumn(Table $table,callable $callback)
+    static function chunkTableColumn(Table $table, callable $callback)
     {
         foreach ($table->getColumns() as $column) {
             $columnName = $column->getColumnName();
@@ -50,6 +56,7 @@ class Unity
             }
         }
     }
+
     static function getModelName($modelClass)
     {
         $modelNameArr = (explode('\\', $modelClass));
