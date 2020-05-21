@@ -8,7 +8,7 @@
 
 namespace EasySwoole\CodeGeneration\ControllerGeneration;
 
-use EasySwoole\CodeGeneration\ModelGeneration\ModelClassGeneration;
+use EasySwoole\CodeGeneration\ModelGeneration\ModelGeneration;
 use EasySwoole\CodeGeneration\ModelGeneration\ModelConfig;
 use EasySwoole\HttpAnnotation\AnnotationController;
 use EasySwoole\ORM\Utility\Schema\Table;

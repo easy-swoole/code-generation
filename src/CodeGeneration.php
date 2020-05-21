@@ -11,10 +11,13 @@ namespace EasySwoole\CodeGeneration;
 
 use EasySwoole\CodeGeneration\ControllerGeneration\ControllerConfig;
 use EasySwoole\CodeGeneration\ControllerGeneration\ControllerGeneration;
-use EasySwoole\CodeGeneration\ModelGeneration\ModelClassGeneration;
+use EasySwoole\CodeGeneration\ModelGeneration\ModelGeneration;
 use EasySwoole\CodeGeneration\ModelGeneration\ModelConfig;
+use EasySwoole\CodeGeneration\UnitTest\UnitTestConfig;
+use EasySwoole\CodeGeneration\UnitTest\UnitTestGeneration;
 use EasySwoole\HttpAnnotation\AnnotationController;
 use EasySwoole\ORM\Db\Connection;
+use PHPUnit\Framework\TestCase;
 
 class CodeGeneration
 {
@@ -29,19 +32,27 @@ class CodeGeneration
         $this->schemaInfo = $schemaInfo;
     }
 
-    function getModelGeneration($path, $tablePre = '', $extendClass = \EasySwoole\ORM\AbstractModel::class): ModelClassGeneration
+    function getModelGeneration($path, $tablePre = '', $extendClass = \EasySwoole\ORM\AbstractModel::class): ModelGeneration
     {
         $modelConfig = new ModelConfig($this->schemaInfo, $tablePre, "App\\Model{$path}", $extendClass);
-        $modelGeneration = new ModelClassGeneration($modelConfig);
+        $modelGeneration = new ModelGeneration($modelConfig);
         $this->modelGeneration = $modelGeneration;
         return $modelGeneration;
     }
 
-    function getControllerGeneration(ModelClassGeneration $modelGeneration, $path, $tablePre = '', $extendClass = AnnotationController::class): ControllerGeneration
+    function getControllerGeneration(ModelGeneration $modelGeneration, $path, $tablePre = '', $extendClass = AnnotationController::class): ControllerGeneration
     {
         $controllerConfig = new ControllerConfig($modelGeneration->getConfig()->getNamespace() . '\\' . $modelGeneration->getClassName(), $this->schemaInfo, $tablePre, "App\\HttpController{$path}", $extendClass);
         $controllerGeneration = new ControllerGeneration($controllerConfig);
+        $this->controllerGeneration = $controllerGeneration;
         return $controllerGeneration;
+    }
+
+    function getUnitTestGeneration(ModelGeneration $modelGeneration, ControllerGeneration $controllerGeneration, $path, $tablePre = '', $extendClass = TestCase::class): UnitTestGeneration
+    {
+        $controllerConfig = new UnitTestConfig($modelGeneration->getConfig()->getNamespace() . '\\' . $modelGeneration->getClassName(), $controllerGeneration->getConfig()->getNamespace() . '\\' . $controllerGeneration->getClassName(), $this->schemaInfo, $tablePre, "UnitTest{$path}", $extendClass);
+        $unitTestGeneration = new UnitTestGeneration($controllerConfig);
+        return $unitTestGeneration;
     }
 
     function generationModel($path, $tablePre = '', $extendClass = \EasySwoole\ORM\AbstractModel::class)
@@ -51,10 +62,19 @@ class CodeGeneration
         return $result;
     }
 
-    function generationController($path, ?ModelClassGeneration $modelGeneration = null, $tablePre = '', $extendClass = AnnotationController::class)
+    function generationController($path, ?ModelGeneration $modelGeneration = null, $tablePre = '', $extendClass = AnnotationController::class)
     {
         $modelGeneration = $modelGeneration ?? $this->modelGeneration;
         $controllerGeneration = $this->getControllerGeneration($modelGeneration, $path, $tablePre, $extendClass);
+        $result = $controllerGeneration->generate();
+        return $result;
+    }
+
+    function generationUnitTest($path, ?ModelGeneration $modelGeneration = null, ?ControllerGeneration $controllerGeneration = null, $tablePre = '', $extendClass = TestCase::class)
+    {
+        $modelGeneration = $modelGeneration ?? $this->modelGeneration;
+        $controllerGeneration = $controllerGeneration ?? $this->controllerGeneration;
+        $controllerGeneration = $this->getUnitTestGeneration($modelGeneration, $controllerGeneration, $path, $tablePre, $extendClass);
         $result = $controllerGeneration->generate();
         return $result;
     }
