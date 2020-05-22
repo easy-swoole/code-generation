@@ -105,12 +105,18 @@ php ./bin/code-generator all user_list \\User \\Api\\\User \\User
 ```
 
 
-
 ## 独立使用
 ### 生成器流程说明
 - 通过`\EasySwoole\ORM\Utility\TableObjectGeneration`,传入`\EasySwoole\ORM\Db\Connection`连接对象,通过`generationTable`方法获取表结构对象
 - 实例化类生成器配置,配置命名空间,生成文件路径,类名等(详情看下面).
 - 实例化生成器对象,调用`generate`方法生成.
+
+### 生成器基础配置项
+- extendClass 继承类,默认为`\EasySwoole\ORM\AbstractModel::class`
+- directory 生成路径,生成路径默认为 `rootPath+namespace`对应路径,namespace路径将自动通过`composer.json->(autoload/autoload-dev)['psr-4']` 配置目录生成,如果没有则默认为根目录
+- namespace 命名空间配置.
+- className 类名
+- rootPath 项目根目录,默认为执行目录.
 
 ### 获取数据表结构
 所有生成器都依赖于数据表结构对象`EasySwoole\ORM\Utility\Schema\Table`
@@ -357,3 +363,177 @@ go(function () {
 #### UnitTest方法.
 UnitTest支持了5个方法,`Add`,`Delete`,`GetList`,`GetOne`,`Update`.
 自定义其他方法可参考Model方法自定义.
+
+
+### 初始化类
+为了方便开发,提供了Controller,Model,UnitTest的初始化类.
+
+#### Controller
+生成方法:
+
+```php
+<?php
+$generation = new \EasySwoole\CodeGeneration\InitBaseClass\Controller\ControllerGeneration();
+    $generation->generate();
+```
+类内容:
+```php
+<?php
+
+namespace App\HttpController;
+
+use EasySwoole\EasySwoole\ServerManager;
+use EasySwoole\EasySwoole\Trigger;
+use EasySwoole\HttpAnnotation\AnnotationController;
+use EasySwoole\HttpAnnotation\Exception\Annotation\ParamValidateError;
+use EasySwoole\Http\Message\Status;
+
+/**
+ * Base
+ * Class Base
+ * Create With ClassGeneration
+ */
+class Base extends AnnotationController
+{
+	public function index()
+	{
+		$this->actionNotFound('index');
+	}
+
+
+	public function clientRealIP($headerName = 'x-real-ip')
+	{
+		$server = ServerManager::getInstance()->getSwooleServer();
+		$client = $server->getClientInfo($this->request()->getSwooleRequest()->fd);
+		$clientAddress = $client['remote_ip'];
+		$xri = $this->request()->getHeader($headerName);
+		$xff = $this->request()->getHeader('x-forwarded-for');
+		if ($clientAddress === '127.0.0.1') {
+		    if (!empty($xri)) {  // 如果有xri 则判定为前端有NGINX等代理
+		        $clientAddress = $xri[0];
+		    } elseif (!empty($xff)) {  // 如果不存在xri 则继续判断xff
+		        $list = explode(',', $xff[0]);
+		        if (isset($list[0])) $clientAddress = $list[0];
+		    }
+		}
+		return $clientAddress;
+	}
+
+
+	public function onException(\Throwable $throwable): void
+	{
+		if ($throwable instanceof ParamValidateError) {
+		    $this->writeJson(Status::CODE_BAD_REQUEST,[], $throwable->getValidate()->getError()->__toString());
+		}  else {
+		    Trigger::getInstance()->throwable($throwable);
+		    $this->writeJson(Status::CODE_INTERNAL_SERVER_ERROR, null, $throwable->getMessage());
+		}
+	}
+}
+
+```
+
+### Model
+生成方法:
+```php
+<?php
+$generation = new \EasySwoole\CodeGeneration\InitBaseClass\Model\ModelGeneration();
+$generation->generate();
+```
+类内容:
+```php
+<?php
+
+namespace App\Model;
+
+use EasySwoole\ORM\AbstractModel;
+use EasySwoole\ORM\DbManager;
+
+/**
+ * BaseModel
+ * Class BaseModel
+ * Create With ClassGeneration
+ */
+class BaseModel extends AbstractModel
+{
+	public static function transaction(callable $callable)
+	{
+		try {
+		    DbManager::getInstance()->startTransaction();
+		    $result = $callable();
+		    DbManager::getInstance()->commit();
+		    return $result;
+		} catch (\Throwable $throwable) {
+		    DbManager::getInstance()->rollback();
+		    throw $throwable;;
+		}
+	}
+}
+```
+
+### UnitTest
+生成方法:
+```php
+<?php
+$generation = new \EasySwoole\CodeGeneration\InitBaseClass\UnitTest\UnitTestGeneration();
+$generation->generate();
+```
+类内容:
+```php
+<?php
+
+namespace UnitTest;
+
+use Curl\Curl;
+use EasySwoole\EasySwoole\Core;
+use PHPUnit\Framework\TestCase;
+
+/**
+ * BaseTest
+ * Class BaseTest
+ * Create With ClassGeneration
+ */
+class BaseTest extends TestCase
+{
+	public static $isInit = 0;
+
+	/** @var Curl */
+	public $curl;
+	public $apiBase = 'http://127.0.0.1:9501';
+	public $modelName;
+
+
+	public function request($action, $data = [], $modelName = null)
+	{
+		$modelName = $modelName ?? $this->modelName;
+		$url = $this->apiBase . '/' . $modelName . '/' . $action;
+		$curl = $this->curl;
+		$curl->post($url, $data);
+		if ($curl->response) {
+		//            var_dump($curl->response);
+		} else {
+		    echo 'Error: ' . $curl->errorCode . ': ' . $curl->errorMessage . "
+";
+		}
+		$this->assertTrue(!!$curl->response);
+		$this->assertEquals(200, $curl->response->code, $curl->response->msg);
+		return $curl->response;
+	}
+
+
+	public function setUp()
+	{
+		if (self::$isInit == 1) {
+		    return true;
+		}
+		require_once dirname(__FILE__, 2) . '/vendor/autoload.php';
+		defined('EASYSWOOLE_ROOT') or define('EASYSWOOLE_ROOT', dirname(__FILE__, 2));
+		require_once dirname(__FILE__, 2) . '/EasySwooleEvent.php';
+		Core::getInstance()->initialize()->globalInitialize();
+		self::$isInit = 1;
+		$this->curl = new Curl();
+	}
+}
+
+
+```
