@@ -116,7 +116,7 @@ class ClassGeneration
         return $this->phpNamespace;
     }
 
-    protected function addGenerationMethod(MethodAbstract $abstract)
+    public function addGenerationMethod(MethodAbstract $abstract)
     {
         $this->methodGenerationList[$abstract->getMethodName()] = $abstract;
     }

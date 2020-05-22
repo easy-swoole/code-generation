@@ -15,7 +15,7 @@ use EasySwoole\Utility\Str;
 
 class ModelConfig extends Config
 {
-    public function __construct(Table $schemaInfo,$tablePre='',$nameSpace="App\\Model",$extendClass=\EasySwoole\ORM\AbstractModel::class)
+    public function __construct(Table $schemaInfo, $tablePre = '', $nameSpace = "App\\Model", $extendClass = \EasySwoole\ORM\AbstractModel::class)
     {
         $this->setTable($schemaInfo);
         $this->setTablePre($tablePre);
@@ -34,6 +34,8 @@ class ModelConfig extends Config
         'list',
         'log'
     ];//文件名生成时,忽略的字符串(list,log等)
+
+    protected $fileSuffix = "Model";//文件后缀
 
     /**
      * @return string
@@ -111,5 +113,20 @@ class ModelConfig extends Config
         $this->ignoreString = $ignoreString;
     }
 
+    /**
+     * @return string
+     */
+    public function getFileSuffix(): string
+    {
+        return $this->fileSuffix;
+    }
+
+    /**
+     * @param string $fileSuffix
+     */
+    public function setFileSuffix(string $fileSuffix): void
+    {
+        $this->fileSuffix = $fileSuffix;
+    }
 
 }

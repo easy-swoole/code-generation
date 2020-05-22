@@ -47,7 +47,7 @@ class ControllerGeneration extends ClassGeneration
 
     function getClassName()
     {
-        return $this->config->getRealTableName();
+        return $this->config->getRealTableName().$this->config->getFileSuffix();
     }
 
 

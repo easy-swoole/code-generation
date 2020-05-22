@@ -15,16 +15,9 @@ use EasySwoole\ORM\Utility\Schema\Table;
 
 class ControllerConfig extends ModelConfig
 {
-    protected $authName;//额外需要的授权用户分组
     protected $authSessionName;//额外需要的授权session名称
     protected $modelClass;//model的类名
-
-    protected $table;//表数据DDL对象
-    protected $ignoreString = [
-        'list',
-        'log'
-    ];//文件名生成时,忽略的字符串(list,log等)
-    protected $realTableName;//表(生成的文件)真实名称
+    protected $fileSuffix='';//文件后缀
 
     public function __construct(string $modelClass, Table $schemaInfo, $tablePre = '', $nameSpace = "App\\HttpController", $extendClass = AnnotationController::class)
     {
@@ -49,22 +42,6 @@ class ControllerConfig extends ModelConfig
     public function setModelClass($modelClass): void
     {
         $this->modelClass = $modelClass;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAuthName()
-    {
-        return $this->authName;
-    }
-
-    /**
-     * @param mixed $authName
-     */
-    public function setAuthName($authName): void
-    {
-        $this->authName = $authName;
     }
 
     /**

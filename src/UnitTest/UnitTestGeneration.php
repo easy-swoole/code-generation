@@ -70,7 +70,7 @@ class UnitTestGeneration extends ClassGeneration
      */
     public function getClassName()
     {
-        $className = $this->config->getRealTableName() . 'Test';
+        $className = $this->config->getRealTableName() . $this->config->getFileSuffix();
         return $className;
     }
 

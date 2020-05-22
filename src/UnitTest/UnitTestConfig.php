@@ -16,6 +16,7 @@ class UnitTestConfig extends ModelConfig
 {
     protected $modelClass;//model的类名
     protected $controllerClass;//controller的类名
+    protected $fileSuffix = 'Test';//文件生成后缀
 
     public function __construct($modelClass, $controllerClass, Table $schemaInfo, $tablePre = '', $nameSpace = "UnitTest", $extendClass = TestCase::class)
     {

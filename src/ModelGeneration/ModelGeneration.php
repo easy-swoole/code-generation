@@ -53,7 +53,7 @@ class ModelGeneration extends ClassGeneration
      */
     public function getClassName()
     {
-        $className = $this->config->getRealTableName() . 'Model';
+        $className = $this->config->getRealTableName() . $this->config->getFileSuffix();
         return $className;
     }
 
