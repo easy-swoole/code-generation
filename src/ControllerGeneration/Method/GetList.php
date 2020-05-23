@@ -39,7 +39,7 @@ class GetList extends MethodAbstract
 \$page = (int)(\$param['page']??1);
 \$limit = (int)(\$param['limit']??20);
 \$model = new {$modelName}();
-\$data = \$model->getAll(\$page, \$limit);
+\$data = \$model->getList(\$page, \$limit);
 \$this->writeJson(Status::CODE_OK, \$data, '获取列表成功');
 Body;
         $method->setBody($methodBody);

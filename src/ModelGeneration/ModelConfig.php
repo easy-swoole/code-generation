@@ -81,7 +81,10 @@ class ModelConfig extends Config
         $tableName = substr($this->getTable()->getTable(), strlen($this->getTablePre()));
         //去除后缀
         foreach ($this->getIgnoreString() as $string) {
-            $tableName = rtrim($tableName, $string);
+            //去除右边的字符
+            if (substr($tableName,-strlen($string))==$string){
+                $tableName = substr($tableName,0,-strlen($string));
+            }
         }
         //下划线转驼峰,并且首字母大写
         $realTableName = ucfirst(Str::camel($tableName));

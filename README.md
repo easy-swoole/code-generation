@@ -534,6 +534,4 @@ class BaseTest extends TestCase
 		$this->curl = new Curl();
 	}
 }
-
-
 ```
