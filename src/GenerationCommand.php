@@ -9,43 +9,47 @@
 namespace EasySwoole\CodeGeneration;
 
 
+use EasySwoole\Command\AbstractInterface\ResultInterface;
+use EasySwoole\Command\Result;
 use EasySwoole\Component\Di;
 use EasySwoole\Component\Timer;
+use EasySwoole\EasySwoole\Command\CommandInterface;
 use EasySwoole\EasySwoole\Command\Utility;
 use EasySwoole\ORM\Db\Connection;
 use EasySwoole\Utility\ArrayToTextTable;
 use Swoole\Coroutine\Scheduler;
 
-class GenerationCommand
+class GenerationCommand implements CommandInterface
 {
     public function commandName(): string
     {
         return "generation";
     }
 
-    public function exec(array $args): ?string
+    public function exec($args): ResultInterface
     {
-        $ret = '';
+        $result = new Result();
         $run = new Scheduler();
-        $run->add(function () use (&$ret, $args) {
+        $run->add(function () use (&$result, $args) {
             $action = array_shift($args);
             switch ($action) {
                 case 'init':
-                    $result = $this->init($args);
+                    $msg = $this->init($args);
                     break;
                 case 'all':
-                    $result = $this->all($args);
+                    $msg = $this->all($args);
                     break;
                 default:
-                    $result = $this->help($args);
+                    $msg = $this->help($args);
                     break;
             }
-            $ret = $result;
+            $result->setMsg($msg);
             Timer::getInstance()->clearAll();
         });
         $run->start();
-        return $ret;
+        return $result;
     }
+
 
     function init($args)
     {
@@ -84,14 +88,17 @@ class GenerationCommand
         return new ArrayToTextTable($result);
     }
 
-    public function help(array $args): ?string
+    public function help($args): ResultInterface
     {
         //输出logo
         $logo = Utility::easySwooleLog();
-        return $logo . "
-php ./bin/code-generator all tableName modelPath [controllerPath] [unitTestPath]
-php ./bin/code-generator init
+        $result = new Result();
+        $msg = $logo . "
+php easyswoole generation all tableName modelPath [controllerPath] [unitTestPath]
+php easyswoole generation init
 ";
+        $result->setMsg($msg);
+        return $result;
     }
 
     protected function getConnection(): Connection
