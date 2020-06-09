@@ -34,16 +34,15 @@ class GenerationCommand implements CommandInterface
             $action = array_shift($args);
             switch ($action) {
                 case 'init':
-                    $msg = $this->init($args);
+                    $result = $this->init($args);
                     break;
                 case 'all':
-                    $msg = $this->all($args);
+                    $result = $this->all($args);
                     break;
                 default:
-                    $msg = $this->help($args);
+                    $result = $this->help($args);
                     break;
             }
-            $result->setMsg($msg);
             Timer::getInstance()->clearAll();
         });
         $run->start();
@@ -53,11 +52,14 @@ class GenerationCommand implements CommandInterface
 
     function init($args)
     {
-        $result = [];
-        $result[0] = ['className' => 'Model', 'filePath' => $this->generationBaseModel()];
-        $result[1] = ['className' => 'Controller', 'filePath' => $this->generationBaseController()];
-        $result[2] = ['className' => 'UnitTest', 'filePath' => $this->generationBaseUnitTest()];
-        return new ArrayToTextTable($result);
+        $table = [];
+        $table[0] = ['className' => 'Model', 'filePath' => $this->generationBaseModel()];
+        $table[1] = ['className' => 'Controller', 'filePath' => $this->generationBaseController()];
+        $table[2] = ['className' => 'UnitTest', 'filePath' => $this->generationBaseUnitTest()];
+
+        $result = new Result();
+        $result->setMsg(new ArrayToTextTable($table));
+        return $result;
     }
 
     function all($args)
@@ -72,20 +74,23 @@ class GenerationCommand implements CommandInterface
         $connection = $this->getConnection();
         $codeGeneration = new CodeGeneration($tableName, $connection);
         $this->trySetDiGenerationPath($codeGeneration);
-        $result = [];
+        $table = [];
         if ($modelPath) {
             $filePath = $codeGeneration->generationModel($modelPath);
-            $result[] = ['className' => 'Model', "filePath" => $filePath];
+            $table[] = ['className' => 'Model', "filePath" => $filePath];
         }
         if ($controllerPath) {
             $filePath = $codeGeneration->generationController($controllerPath);
-            $result[] = ['className' => 'controller', "filePath" => $filePath];
+            $table[] = ['className' => 'controller', "filePath" => $filePath];
         }
         if ($unitTestPath) {
             $filePath = $codeGeneration->generationUnitTest($unitTestPath);
-            $result[] = ['className' => 'UnitTest', "filePath" => $filePath];
+            $table[] = ['className' => 'UnitTest', "filePath" => $filePath];
         }
-        return new ArrayToTextTable($result);
+
+        $result = new Result();
+        $result->setMsg(new ArrayToTextTable($table));
+        return $result;
     }
 
     public function help($args): ResultInterface
