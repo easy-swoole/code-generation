@@ -139,7 +139,7 @@ class CodeGeneration
      */
     public function getRootPath(): string
     {
-        if (empty($this->rootPath)){
+        if (empty($this->rootPath)) {
             $this->rootPath = getcwd();
         }
         return $this->rootPath;
