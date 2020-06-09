@@ -15,9 +15,9 @@ class GetList extends MethodAbstract
     protected $methodName = 'getList';
     protected $methodDescription = '获取数据列表';
     protected $responseParam = [
-        'code'   => '状态码',
+        'code' => '状态码',
         'result' => 'api请求结果',
-        'msg'    => 'api提示信息',
+        'msg' => 'api提示信息',
     ];
     protected $authParam = 'userSession';
     protected $methodAllow = "GET,POST";
@@ -37,9 +37,9 @@ class GetList extends MethodAbstract
         $methodBody = <<<Body
 \$param = \$this->request()->getRequestParam();
 \$page = (int)(\$param['page']??1);
-\$limit = (int)(\$param['limit']??20);
+\$pageSize = (int)(\$param['pageSize']??20);
 \$model = new {$modelName}();
-\$data = \$model->getList(\$page, \$limit);
+\$data = \$model->getList(\$page, \pageSize);
 \$this->writeJson(Status::CODE_OK, \$data, '获取列表成功');
 Body;
         $method->setBody($methodBody);
