@@ -28,7 +28,6 @@ class UnitTestGeneration extends ClassGeneration
     {
         $this->phpClass->addProperty('modelName', $this->getApiUrl());
         $this->phpNamespace->addUse($this->config->getModelClass());
-        $this->addClassBaseContent();
         $this->addGenerationMethod(new Add($this));
         $this->addGenerationMethod(new GetOne($this));
         $this->addGenerationMethod(new Update($this));
@@ -41,28 +40,6 @@ class UnitTestGeneration extends ClassGeneration
         $baseNamespace = $this->config->getControllerClass();
         $modelName = str_replace(['App\\HttpController', '\\'], ['', '/'], $baseNamespace);
         return $modelName;
-    }
-
-    /**
-     * 新增基础类内容
-     * addClassBaseContent
-     * @author Tioncico
-     * Time: 21:38
-     */
-    protected function addClassBaseContent(): ClassType
-    {
-        $table = $this->config->getTable();
-        $phpClass = $this->phpClass;
-        //配置表名属性
-        $phpClass->addProperty('tableName', $table->getTable())
-            ->setVisibility('protected');
-        foreach ($table->getColumns() as $column) {
-            $name = $column->getColumnName();
-            $comment = $column->getColumnComment();
-            $columnType = Unity::convertDbTypeToDocType($column->getColumnType());
-            $phpClass->addComment("@property {$columnType} \${$name} // {$comment}");
-        }
-        return $phpClass;
     }
 
     /**
