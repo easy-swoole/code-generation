@@ -97,10 +97,10 @@ php easyswoole generation
                           __/ |
                          |___/
 
-php ./bin/code-generator all tableName modelPath [controllerPath] [unitTestPath]
-php ./bin/code-generator init
+php easyswoole generator all tableName modelPath [controllerPath] [unitTestPath]
+php easyswoole generator init
 
-php ./bin/code-generator all user_list \\User \\Api\\\User \\User
+php easyswoole generator all user_list \\User \\Api\\\User \\User
 
 ```
 
