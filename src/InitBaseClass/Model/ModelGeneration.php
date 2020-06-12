@@ -43,7 +43,7 @@ try {
     return \$result;
 } catch (\Throwable \$throwable) {
     DbManager::getInstance()->rollback();
-    throw \$throwable;;
+    throw \$throwable;
 }
 BODY
         );
