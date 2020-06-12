@@ -38,7 +38,7 @@ class GetList extends MethodAbstract
     ->field(\$field)
     ->page(\$page, \$pageSize)
     ->all();
-\$total = \$this->lastQueryResult()->getTotalCount();;
+\$total = \$this->lastQueryResult()->getTotalCount();
 return ['total' => \$total, 'list' => \$list];
 Body;
         //配置方法内容
