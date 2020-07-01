@@ -49,9 +49,9 @@ Body;
             if ($columnName == $table->getPkFiledName()) {
                 $paramValue->required = '';
             } else {
+                $methodBody .= "\$updateData['{$columnName}']=\$param['{$columnName}'] ?? \$info->{$columnName};\n";
                 $paramValue->optional = '';
             }
-            $methodBody .= "\$updateData['{$columnName}']=\$param['{$columnName}'] ?? \$info->{$columnName};\n";
             $this->addColumnComment($paramValue);
         });
 

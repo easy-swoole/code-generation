@@ -17,11 +17,15 @@ use EasySwoole\CodeGeneration\ControllerGeneration\Method\GetList;
 use EasySwoole\CodeGeneration\ControllerGeneration\Method\GetOne;
 use EasySwoole\CodeGeneration\ControllerGeneration\Method\Update;
 use EasySwoole\Http\Message\Status;
-use EasySwoole\HttpAnnotation\AnnotationTag\DocTag\Api;
-use EasySwoole\HttpAnnotation\AnnotationTag\DocTag\ApiFail;
-use EasySwoole\HttpAnnotation\AnnotationTag\DocTag\ApiRequestExample;
-use EasySwoole\HttpAnnotation\AnnotationTag\DocTag\ApiSuccess;
-use EasySwoole\HttpAnnotation\AnnotationTag\DocTag\ResponseParam;
+use EasySwoole\HttpAnnotation\AnnotationTag\Api;
+use EasySwoole\HttpAnnotation\AnnotationTag\ApiDescription;
+use EasySwoole\HttpAnnotation\AnnotationTag\ApiFail;
+use EasySwoole\HttpAnnotation\AnnotationTag\ApiGroup;
+use EasySwoole\HttpAnnotation\AnnotationTag\ApiGroupAuth;
+use EasySwoole\HttpAnnotation\AnnotationTag\ApiGroupDescription;
+use EasySwoole\HttpAnnotation\AnnotationTag\ApiRequestExample;
+use EasySwoole\HttpAnnotation\AnnotationTag\ApiResponseParam;
+use EasySwoole\HttpAnnotation\AnnotationTag\ApiSuccess;
 use EasySwoole\HttpAnnotation\AnnotationTag\Method;
 use EasySwoole\HttpAnnotation\AnnotationTag\Param;
 use EasySwoole\Validate\Validate;
@@ -47,9 +51,28 @@ class ControllerGeneration extends ClassGeneration
 
     function getClassName()
     {
-        return $this->config->getRealTableName().$this->config->getFileSuffix();
+        return $this->config->getRealTableName() . $this->config->getFileSuffix();
     }
 
+    protected function addComment()
+    {
+        parent::addComment();
+
+        //新增类注解
+        $this->phpClass->addComment("@ApiGroup(groupName=\"{$this->getApiGroup()}\")");
+        if (!empty($this->config->getAuthSessionName())) {
+            $this->phpClass->addComment("@ApiGroupAuth(name=\"{$this->config->getAuthSessionName()}\")");
+        }
+        $this->phpClass->addComment("@ApiGroupDescription(\"{$this->config->getTable()->getComment()}\")");
+    }
+
+    protected function getApiGroup(){
+        $className=  $this->getClassName();
+        $namespace = $this->getConfig()->getNamespace();
+        $namespace = str_replace('App\HttpController\\','',$namespace);
+        $namespace = str_replace('\\','.',$namespace);
+        return "{$namespace}.$className";
+    }
 
     protected function addUse(PhpNamespace $phpNamespace)
     {
@@ -59,16 +82,21 @@ class ControllerGeneration extends ClassGeneration
         $phpNamespace->addUse(Validate::class);
         $phpNamespace->addUse($this->config->getExtendClass());
         //引入新版注解,以及文档生成
+        $phpNamespace->addUse(ApiGroup::class);
+        $phpNamespace->addUse(ApiGroupAuth::class);
+        $phpNamespace->addUse(ApiGroupDescription::class);
         $phpNamespace->addUse(ApiFail::class);
         $phpNamespace->addUse(ApiRequestExample::class);
         $phpNamespace->addUse(ApiSuccess::class);
         $phpNamespace->addUse(Method::class);
         $phpNamespace->addUse(Param::class);
         $phpNamespace->addUse(Api::class);
-        $phpNamespace->addUse(ResponseParam::class);
+        $phpNamespace->addUse(ApiResponseParam::class);
+        $phpNamespace->addUse(ApiDescription::class);
     }
 
-    function addGenerationMethod(MethodAbstract $abstract){
+    function addGenerationMethod(MethodAbstract $abstract)
+    {
         $this->methodGenerationList[$abstract->getMethodName()] = $abstract;
     }
 }

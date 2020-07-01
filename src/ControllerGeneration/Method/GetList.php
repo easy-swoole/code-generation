@@ -31,8 +31,8 @@ class GetList extends MethodAbstract
         $modelName = $this->getModelName();
 
         //新增page参数注解
-        $method->addComment("@Param(name=\"page\", from={GET,POST}, alias=\"页数\" optional=\"\")");
-        $method->addComment("@Param(name=\"pageSize\", from={GET,POST}, alias=\"每页总数\" optional=\"\")");
+        $method->addComment("@Param(name=\"page\", from={GET,POST}, alias=\"页数\", optional=\"\")");
+        $method->addComment("@Param(name=\"pageSize\", from={GET,POST}, alias=\"每页总数\", optional=\"\")");
 
         $methodBody = <<<Body
 \$param = \$this->request()->getRequestParam();

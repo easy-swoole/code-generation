@@ -68,11 +68,8 @@ abstract class MethodAbstract extends \EasySwoole\CodeGeneration\ClassGeneration
         $methodName = $this->methodName;
 
         //配置基础注释
-        $method->addComment("@Api(name=\"{$methodName}\",group=\"{$apiUrl}/{$realTableName}\",description=\"{$this->methodDescription}\",path=\"{$apiUrl}/{$realTableName}/{$methodName}\")");
+        $method->addComment("@Api(name=\"{$methodName}\",description=\"{$this->methodDescription}\",path=\"{$apiUrl}/{$realTableName}/{$methodName}\")");
         $method->addComment("@Method(allow={{$this->methodAllow}})");
-        if ($this->authParam) {
-            $method->addComment("@Param(name=\"{$this->authParam}\", from={COOKIE,GET,POST}, alias=\"权限验证token\" required=\"\")");
-        }
 
     }
 
