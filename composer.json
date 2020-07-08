@@ -6,7 +6,7 @@
     "easyswoole/socket": "^1.0",
     "easyswoole/orm": "^1.4.5",
     "nette/php-generator": "^3.2",
-    "easyswoole/http-annotation": "^1.1.0",
+    "easyswoole/http-annotation": "dev-master",
     "php-curl-class/php-curl-class": "^8.5",
     "easyswoole/phpunit": "^1.0"
   },
