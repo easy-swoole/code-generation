@@ -8,7 +8,8 @@
     "nette/php-generator": "^3.2",
     "easyswoole/http-annotation": "^1.4",
     "php-curl-class/php-curl-class": "^8.5",
-    "easyswoole/phpunit": "^1.0"
+    "easyswoole/phpunit": "^1.0",
+    "phpunit/phpunit": "7.5.20"
   },
   "authors": [
     {

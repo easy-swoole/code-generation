@@ -51,14 +51,14 @@ class UnitTestGeneration extends ClassGeneration
 
     protected function addSetUp()
     {
-        $this->phpClass->addMethod('setUp')->setBody(<<<BODY
+        $this->phpClass->addMethod('setUp')->setProtected()->setReturnNullable()->setBody(<<<BODY
 if (self::\$isInit == 1) {
     return true;
 }
 require_once dirname(__FILE__, 2) . '/vendor/autoload.php';
 defined('EASYSWOOLE_ROOT') or define('EASYSWOOLE_ROOT', dirname(__FILE__, 2));
 require_once dirname(__FILE__, 2) . '/EasySwooleEvent.php';
-Core::getInstance()->initialize()->globalInitialize();
+Core::getInstance()->initialize();
 self::\$isInit = 1;
 \$this->curl = new Curl();
 BODY
