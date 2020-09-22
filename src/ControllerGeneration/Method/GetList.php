@@ -35,7 +35,7 @@ class GetList extends MethodAbstract
         $method->addComment("@Param(name=\"pageSize\", from={GET,POST}, alias=\"每页总数\", optional=\"\")");
 
         $methodBody = <<<Body
-\$param = \$this->request()->getRequestParam();
+\$param = ContextManager::getInstance()->get('param');
 \$page = (int)(\$param['page']??1);
 \$pageSize = (int)(\$param['pageSize']??20);
 \$model = new {$modelName}();

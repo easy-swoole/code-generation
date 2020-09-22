@@ -44,7 +44,7 @@ class Delete extends MethodAbstract
             return true;
         });
         $methodBody = <<<Body
-\$param = \$this->request()->getRequestParam();
+\$param = ContextManager::getInstance()->get('param');
 \$model = new {$modelName}();
 \$info = \$model->get(['{$table->getPkFiledName()}' => \$param['{$table->getPkFiledName()}']]);
 if (!\$info) {

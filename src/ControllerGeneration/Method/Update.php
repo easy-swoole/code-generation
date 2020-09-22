@@ -34,7 +34,7 @@ class Update extends MethodAbstract
         $table = $this->controllerConfig->getTable();
 
         $methodBody = <<<Body
-\$param = \$this->request()->getRequestParam();
+\$param = ContextManager::getInstance()->get('param');
 \$model = new {$modelName}();
 \$info = \$model->get(['{$table->getPkFiledName()}' => \$param['{$table->getPkFiledName()}']]);
 if (empty(\$info)) {

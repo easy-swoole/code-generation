@@ -30,7 +30,7 @@ class Add extends MethodAbstract
         $method = $this->method;
         $modelName = $this->getModelName();
         $methodBody = <<<Body
-\$param = \$this->request()->getRequestParam();
+\$param = ContextManager::getInstance()->get('param');
 \$data = [
 
 Body;

@@ -74,7 +74,7 @@ abstract class MethodAbstract extends \EasySwoole\CodeGeneration\ClassGeneration
         if ($this->authParam) {
             $method->addComment("@Param(name=\"{$this->authParam}\", from={COOKIE,GET,POST}, alias=\"权限验证token\" required=\"\")");
         }
-
+        $method->addComment("@InjectParamsContext(key=\"param\")");
     }
 
     /**

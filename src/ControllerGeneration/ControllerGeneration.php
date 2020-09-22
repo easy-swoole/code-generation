@@ -16,6 +16,7 @@ use EasySwoole\CodeGeneration\ControllerGeneration\Method\Delete;
 use EasySwoole\CodeGeneration\ControllerGeneration\Method\GetList;
 use EasySwoole\CodeGeneration\ControllerGeneration\Method\GetOne;
 use EasySwoole\CodeGeneration\ControllerGeneration\Method\Update;
+use EasySwoole\Component\Context\ContextManager;
 use EasySwoole\Http\Message\Status;
 use EasySwoole\HttpAnnotation\AnnotationTag\Api;
 use EasySwoole\HttpAnnotation\AnnotationTag\ApiDescription;
@@ -26,6 +27,8 @@ use EasySwoole\HttpAnnotation\AnnotationTag\ApiGroupDescription;
 use EasySwoole\HttpAnnotation\AnnotationTag\ApiRequestExample;
 use EasySwoole\HttpAnnotation\AnnotationTag\ApiResponseParam;
 use EasySwoole\HttpAnnotation\AnnotationTag\ApiSuccess;
+use EasySwoole\HttpAnnotation\AnnotationTag\ApiSuccessParam;
+use EasySwoole\HttpAnnotation\AnnotationTag\InjectParamsContext;
 use EasySwoole\HttpAnnotation\AnnotationTag\Method;
 use EasySwoole\HttpAnnotation\AnnotationTag\Param;
 use EasySwoole\Validate\Validate;
@@ -54,18 +57,6 @@ class ControllerGeneration extends ClassGeneration
         return $this->config->getRealTableName() . $this->config->getFileSuffix();
     }
 
-    protected function addComment()
-    {
-        parent::addComment();
-
-        //新增类注解
-        $this->phpClass->addComment("@ApiGroup(groupName=\"{$this->getApiGroup()}\")");
-        if (!empty($this->config->getAuthSessionName())) {
-            $this->phpClass->addComment("@ApiGroupAuth(name=\"{$this->config->getAuthSessionName()}\")");
-        }
-        $this->phpClass->addComment("@ApiGroupDescription(\"{$this->config->getTable()->getComment()}\")");
-    }
-
     protected function getApiGroup(){
         $className=  $this->getClassName();
         $namespace = $this->getConfig()->getNamespace();
@@ -91,8 +82,10 @@ class ControllerGeneration extends ClassGeneration
         $phpNamespace->addUse(Method::class);
         $phpNamespace->addUse(Param::class);
         $phpNamespace->addUse(Api::class);
-        $phpNamespace->addUse(ApiResponseParam::class);
+        $phpNamespace->addUse(ApiSuccessParam::class);
         $phpNamespace->addUse(ApiDescription::class);
+        $phpNamespace->addUse(ContextManager::class);
+        $phpNamespace->addUse(InjectParamsContext::class);
     }
 
     function addGenerationMethod(MethodAbstract $abstract)
