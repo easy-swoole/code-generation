@@ -1,42 +1,41 @@
 {
-  "name": "easyswoole/code-generation",
-  "license": "Apache-2.0",
-  "require": {
-    "easyswoole/trigger": "^1.0",
-    "easyswoole/socket": "^1.0",
-    "easyswoole/orm": "^1.4",
-    "nette/php-generator": "^3.2",
-    "easyswoole/http-annotation": "^1.4",
-    "php-curl-class/php-curl-class": "^8.5",
-    "easyswoole/phpunit": "^1.0",
-    "phpunit/phpunit": "7.5.20"
-  },
-  "authors": [
-    {
-      "name": "tioncico",
-      "email": "1067197739@qq.com"
-    }
-  ],
-  "minimum-stability": "dev",
-  "autoload": {
-    "psr-4": {
-      "EasySwoole\\CodeGeneration\\": "src/",
-      "App\\": "App/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "EasySwoole\\CodeGeneration\\Test\\": "Tests/",
-      "EasySwoole\\CodeGeneration\\UnitTest\\": "UnitTest/",
-      "App\\": "App/",
-      "UnitTest\\": "UnitTest/"
-    }
-  },
-  "require-dev": {
-    "easyswoole/easyswoole": "^3.3",
-    "easyswoole/swoole-ide-helper": "^1.2"
-  },
-  "bin": [
-    "bin/code-generator"
-  ]
+    "name": "easyswoole/code-generation",
+    "license": "Apache-2.0",
+    "require": {
+        "easyswoole/trigger": "^1.0",
+        "easyswoole/socket": "^1.0",
+        "easyswoole/orm": "^1.4",
+        "nette/php-generator": "^3.2",
+        "easyswoole/http-annotation": "^1.4",
+        "php-curl-class/php-curl-class": "^8.5",
+        "easyswoole/phpunit": "^1.0"
+    },
+    "authors": [
+        {
+            "name": "tioncico",
+            "email": "1067197739@qq.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "EasySwoole\\CodeGeneration\\": "src/",
+            "App\\": "App/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EasySwoole\\CodeGeneration\\Test\\": "Tests/",
+            "EasySwoole\\CodeGeneration\\UnitTest\\": "UnitTest/",
+            "App\\": "App/",
+            "UnitTest\\": "UnitTest/"
+        }
+    },
+    "require-dev": {
+        "easyswoole/easyswoole": "^3.3",
+        "easyswoole/swoole-ide-helper": "^1.2"
+    },
+    "bin": [
+        "bin/code-generator"
+    ]
 }

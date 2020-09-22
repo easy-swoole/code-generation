@@ -22,7 +22,7 @@ class GetList extends MethodAbstract
     protected $authParam = 'userSession';
     protected $methodAllow = "GET,POST";
     protected $responseSuccessText = '{"code":200,"result":[],"msg":"获取成功"}';
-    protected $responseFailText = '{"code":400,"result":[],"msg":"获取失败"}"}';
+    protected $responseFailText = '{"code":400,"result":[],"msg":"获取失败"}';
 
 
     function addMethodBody()
@@ -31,8 +31,8 @@ class GetList extends MethodAbstract
         $modelName = $this->getModelName();
 
         //新增page参数注解
-        $method->addComment("@Param(name=\"page\", from={GET,POST}, alias=\"页数\" optional=\"\")");
-        $method->addComment("@Param(name=\"pageSize\", from={GET,POST}, alias=\"每页总数\" optional=\"\")");
+        $method->addComment("@Param(name=\"page\", from={GET,POST}, alias=\"页数\", optional=\"\")");
+        $method->addComment("@Param(name=\"pageSize\", from={GET,POST}, alias=\"每页总数\", optional=\"\")");
 
         $methodBody = <<<Body
 \$param = \$this->request()->getRequestParam();

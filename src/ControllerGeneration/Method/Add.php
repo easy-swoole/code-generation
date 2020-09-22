@@ -23,7 +23,7 @@ class Add extends MethodAbstract
     protected $authParam = 'userSession';
     protected $methodAllow = "GET,POST";
     protected $responseSuccessText = '{"code":200,"result":[],"msg":"新增成功"}';
-    protected $responseFailText = '{"code":400,"result":[],"msg":"新增失败"}"}';
+    protected $responseFailText = '{"code":400,"result":[],"msg":"新增失败"}';
 
     function addMethodBody()
     {

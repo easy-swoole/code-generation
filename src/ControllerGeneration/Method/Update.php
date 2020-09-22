@@ -24,7 +24,7 @@ class Update extends MethodAbstract
     protected $authParam = 'userSession';
     protected $methodAllow = "GET,POST";
     protected $responseSuccessText = '{"code":200,"result":[],"msg":"更新成功"}';
-    protected $responseFailText = '{"code":400,"result":[],"msg":"更新失败"}"}';
+    protected $responseFailText = '{"code":400,"result":[],"msg":"更新失败"}';
 
 
     function addMethodBody()
