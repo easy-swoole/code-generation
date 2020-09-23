@@ -189,8 +189,15 @@ public function getList(int $page = 1, int $pageSize = 10, string $field = '*'):
         ->field($field)
         ->page($page, $pageSize)
         ->all();
-    $total = $this->lastQueryResult()->getTotalCount();;
-    return ['total' => $total, 'list' => $list];
+    $total = $this->lastQueryResult()->getTotalCount();
+    $data = [
+        'page'=>$page,
+        'pageSize'=>$pageSize,
+        'list'=>$list,
+        'total'=>$total,
+        'pageCount'=>ceil($total / $pageSize)
+    ];
+    return $data;
 }
 ```
 ::: warning

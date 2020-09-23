@@ -39,7 +39,14 @@ class GetList extends MethodAbstract
     ->page(\$page, \$pageSize)
     ->all();
 \$total = \$this->lastQueryResult()->getTotalCount();
-return ['total' => \$total, 'list' => \$list];
+\$data = [
+    'page'=>\$page,
+    'pageSize'=>\$pageSize,
+    'list'=>\$list,
+    'total'=>\$total,
+    'pageCount'=>ceil(\$total / \$pageSize)
+];
+return \$data;
 Body;
         //配置方法内容
         $method->setBody($methodBody);

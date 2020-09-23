@@ -51,9 +51,9 @@ class UnitTestGeneration extends ClassGeneration
 
     protected function addSetUp()
     {
-        $this->phpClass->addMethod('setUp')->setProtected()->setReturnNullable()->setBody(<<<BODY
+        $this->phpClass->addMethod('setUp')->setReturnType('void')->setProtected()->setBody(<<<BODY
 if (self::\$isInit == 1) {
-    return true;
+    return;
 }
 require_once dirname(__FILE__, 2) . '/vendor/autoload.php';
 defined('EASYSWOOLE_ROOT') or define('EASYSWOOLE_ROOT', dirname(__FILE__, 2));
