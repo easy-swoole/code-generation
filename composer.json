@@ -7,7 +7,8 @@
     "easyswoole/orm": "^1.4",
     "nette/php-generator": "^3.2",
     "easyswoole/http-annotation": "^1.4",
-    "php-curl-class/php-curl-class": "^8.5"
+    "php-curl-class/php-curl-class": "^8.5",
+    "easyswoole/command": "^1.1"
   },
   "authors": [
     {
