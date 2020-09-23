@@ -297,7 +297,7 @@ class BaseTest extends TestCase
 		//            var_dump($curl->response);
 		} else {
 		    echo 'Error: ' . $curl->errorCode . ': ' . $curl->errorMessage . "
-";
+		";
 		}
 		$this->assertTrue(!!$curl->response);
 		$this->assertEquals(200, $curl->response->code, $curl->response->msg);
@@ -305,15 +305,15 @@ class BaseTest extends TestCase
 	}
 
 
-	public function setUp()
+	protected function setUp(): void
 	{
 		if (self::$isInit == 1) {
-		    return true;
+		    return;
 		}
 		require_once dirname(__FILE__, 2) . '/vendor/autoload.php';
 		defined('EASYSWOOLE_ROOT') or define('EASYSWOOLE_ROOT', dirname(__FILE__, 2));
 		require_once dirname(__FILE__, 2) . '/EasySwooleEvent.php';
-		Core::getInstance()->initialize()->globalInitialize();
+		Core::getInstance()->initialize();
 		self::$isInit = 1;
 		$this->curl = new Curl();
 	}
@@ -520,7 +520,7 @@ class BaseTest extends TestCase
 		//            var_dump($curl->response);
 		} else {
 		    echo 'Error: ' . $curl->errorCode . ': ' . $curl->errorMessage . "
-";
+		";
 		}
 		$this->assertTrue(!!$curl->response);
 		$this->assertEquals(200, $curl->response->code, $curl->response->msg);
@@ -528,17 +528,18 @@ class BaseTest extends TestCase
 	}
 
 
-	public function setUp()
+	protected function setUp(): void
 	{
 		if (self::$isInit == 1) {
-		    return true;
+		    return;
 		}
 		require_once dirname(__FILE__, 2) . '/vendor/autoload.php';
 		defined('EASYSWOOLE_ROOT') or define('EASYSWOOLE_ROOT', dirname(__FILE__, 2));
 		require_once dirname(__FILE__, 2) . '/EasySwooleEvent.php';
-		Core::getInstance()->initialize()->globalInitialize();
+		Core::getInstance()->initialize();
 		self::$isInit = 1;
 		$this->curl = new Curl();
 	}
 }
+
 ```
