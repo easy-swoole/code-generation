@@ -9,12 +9,13 @@
 namespace EasySwoole\CodeGeneration;
 
 
-use EasySwoole\Command\AbstractInterface\ResultInterface;
+use EasySwoole\Command\AbstractInterface\CommandHelpInterface;
+use EasySwoole\Command\Color;
+use EasySwoole\Command\CommandManager;
 use EasySwoole\Command\Result;
 use EasySwoole\Component\Di;
 use EasySwoole\Component\Timer;
 use EasySwoole\EasySwoole\Command\CommandInterface;
-use EasySwoole\EasySwoole\Command\Utility;
 use EasySwoole\ORM\Db\Connection;
 use EasySwoole\Utility\ArrayToTextTable;
 use Swoole\Coroutine\Scheduler;
@@ -26,51 +27,67 @@ class GenerationCommand implements CommandInterface
         return "generation";
     }
 
-    public function exec($args): ResultInterface
+    public function desc(): string
     {
+        return 'Code auto generation tool';
+    }
+
+
+    public function help(CommandHelpInterface $commandHelp): CommandHelpInterface
+    {
+        $commandHelp->addAction('init', 'initialization');
+        $commandHelp->addAction('all', 'specify build');
+        $commandHelp->addActionOpt('--tableName', 'specify table name');
+        $commandHelp->addActionOpt('--modelPath', 'specify model path');
+        $commandHelp->addActionOpt('--controllerPath', 'specify controller path');
+        $commandHelp->addActionOpt('--unitTestPath', 'specify unit-test path');
+        return $commandHelp;
+    }
+
+    public function exec(): ?string
+    {
+        $action = CommandManager::getInstance()->getArg(0);
         $result = new Result();
         $run = new Scheduler();
-        $run->add(function () use (&$result, $args) {
-            $action = array_shift($args);
+        $run->add(function () use (&$result, $action) {
             switch ($action) {
                 case 'init':
-                    $result = $this->init($args);
+                    $result = $this->init();
                     break;
                 case 'all':
-                    $result = $this->all($args);
+                    $result = $this->all();
                     break;
                 default:
-                    $result = $this->help($args);
+                    $result = CommandManager::getInstance()->displayCommandHelp($this->commandName());
                     break;
             }
             Timer::getInstance()->clearAll();
         });
         $run->start();
-        return $result;
+        return $result . PHP_EOL;
     }
 
 
-    function init($args)
+    protected function init()
     {
         $table = [];
         $table[0] = ['className' => 'Model', 'filePath' => $this->generationBaseModel()];
         $table[1] = ['className' => 'Controller', 'filePath' => $this->generationBaseController()];
         $table[2] = ['className' => 'UnitTest', 'filePath' => $this->generationBaseUnitTest()];
 
-        $result = new Result();
-        $result->setMsg(new ArrayToTextTable($table));
-        return $result;
+        return new ArrayToTextTable($table);
     }
 
-    function all($args)
+    protected function all()
     {
-        $tableName = array_shift($args);
+        $tableName = CommandManager::getInstance()->getOpt('tableName');
         if (empty($tableName)) {
-            return "table not empty";
+            return Color::error("table not empty");
         }
-        $modelPath = array_shift($args);
-        $controllerPath = array_shift($args);
-        $unitTestPath = array_shift($args);
+
+        $modelPath = CommandManager::getInstance()->getOpt('modelPath');
+        $controllerPath = CommandManager::getInstance()->getOpt('controllerPath');
+        $unitTestPath = CommandManager::getInstance()->getOpt('unitTestPath');
         $connection = $this->getConnection();
         $codeGeneration = new CodeGeneration($tableName, $connection);
         $this->trySetDiGenerationPath($codeGeneration);
@@ -88,22 +105,7 @@ class GenerationCommand implements CommandInterface
             $table[] = ['className' => 'UnitTest', "filePath" => $filePath];
         }
 
-        $result = new Result();
-        $result->setMsg(new ArrayToTextTable($table));
-        return $result;
-    }
-
-    public function help($args): ResultInterface
-    {
-        //输出logo
-        $logo = Utility::easySwooleLog();
-        $result = new Result();
-        $msg = $logo . "
-php easyswoole generation all tableName modelPath [controllerPath] [unitTestPath]
-php easyswoole generation init
-";
-        $result->setMsg($msg);
-        return $result;
+        return new ArrayToTextTable($table);
     }
 
     protected function getConnection(): Connection
@@ -142,19 +144,19 @@ php easyswoole generation init
     }
 
 
-    function generationBaseController()
+    protected function generationBaseController()
     {
         $generation = new \EasySwoole\CodeGeneration\InitBaseClass\Controller\ControllerGeneration();
         return $generation->generate();
     }
 
-    function generationBaseUnitTest()
+    protected function generationBaseUnitTest()
     {
         $generation = new \EasySwoole\CodeGeneration\InitBaseClass\UnitTest\UnitTestGeneration();
         return $generation->generate();
     }
 
-    function generationBaseModel()
+    protected function generationBaseModel()
     {
         $generation = new \EasySwoole\CodeGeneration\InitBaseClass\Model\ModelGeneration();
         return $generation->generate();
