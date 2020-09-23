@@ -32,15 +32,19 @@ class GetOne extends MethodAbstract
         $method = $this->method;
         $table = $this->controllerConfig->getTable();
         $modelName = $this->getModelName();
-        $this->chunkTableColumn(function (Column $column, string $columnName) use ($table,&$methodBody) {
+        $responseParamComment = [];
+        $this->chunkTableColumn(function (Column $column, string $columnName) use ($table,&$methodBody,&$responseParamComment) {
             $paramValue = $this->newColumnParam($column);
+            $responseParamName = "result.{$column->getColumnName()}";
+            $responseParamComment[] = "@ApiSuccessParam(name=\"{$responseParamName}\",description=\"{$column->getColumnComment()}\")";
             if ($columnName != $table->getPkFiledName()) {
                 return false;
             }
             $paramValue->required= '';
             $this->addColumnComment($paramValue);
-            return true;
+            return false;
         });
+        $this->addResponseParamComment($responseParamComment);
 
         $methodBody = <<<Body
 \$param = ContextManager::getInstance()->get('param');
@@ -55,6 +59,13 @@ Body;
         $method->setBody($methodBody);
 
     }
+
+    function addResponseParamComment($responseParamArr){
+        foreach ($responseParamArr as  $value){
+            $this->method->addComment($value);
+        }
+    }
+
 
 
 }

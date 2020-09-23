@@ -9,6 +9,8 @@
 namespace EasySwoole\CodeGeneration\ControllerGeneration\Method;
 
 
+use EasySwoole\ORM\Utility\Schema\Column;
+
 class GetList extends MethodAbstract
 {
 
@@ -34,6 +36,14 @@ class GetList extends MethodAbstract
         $method->addComment("@Param(name=\"page\", from={GET,POST}, alias=\"页数\", optional=\"\")");
         $method->addComment("@Param(name=\"pageSize\", from={GET,POST}, alias=\"每页总数\", optional=\"\")");
 
+        $responseParamComment = [];
+        $this->chunkTableColumn(function (Column $column, string $columnName) use (&$responseParamComment) {
+            $responseParamName = "result[].{$columnName}";
+            $responseParamComment[] = "@ApiSuccessParam(name=\"{$responseParamName}\",description=\"{$column->getColumnComment()}\")";
+            return false;
+        });
+        $this->addResponseParamComment($responseParamComment);
+
         $methodBody = <<<Body
 \$param = ContextManager::getInstance()->get('param');
 \$page = (int)(\$param['page']??1);
@@ -45,5 +55,11 @@ Body;
         $method->setBody($methodBody);
     }
 
+
+    function addResponseParamComment($responseParamArr){
+        foreach ($responseParamArr as  $value){
+            $this->method->addComment($value);
+        }
+    }
 
 }
