@@ -1,3 +1,6 @@
+# 2.x版本说明
+2.x相对于1.x版本,兼容了`easyswoole`的最新注解组件,支持了新的easyswoole文档自动生成,以及最新的`phpunit`版本,同时完善了`Model->getList返回参数`,以及`控制器getOne,getList`的`response参数注解`
+
 # code-generation
 easyswoole代码生成组件,可使用命令行,代码一键生成业务通用代码,支持代码如下:
 - 一键生成项目初始化 baseController,baseModel,baseUnitTest.
