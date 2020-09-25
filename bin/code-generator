@@ -5,6 +5,7 @@ require_once getcwd() . '/vendor/autoload.php';
 require_once getcwd() . '/bootstrap.php';
 
 $command = new \EasySwoole\CodeGeneration\GenerationCommand();
+\EasySwoole\Command\CommandManager::getInstance()->addCommand($command);
 
 $caller = new \EasySwoole\Command\Caller();
 $caller->setScript(current($argv));
