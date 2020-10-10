@@ -10,12 +10,12 @@ namespace EasySwoole\CodeGeneration;
 
 
 use EasySwoole\Command\AbstractInterface\CommandHelpInterface;
+use EasySwoole\Command\AbstractInterface\CommandInterface;
 use EasySwoole\Command\Color;
 use EasySwoole\Command\CommandManager;
 use EasySwoole\Command\Result;
 use EasySwoole\Component\Di;
 use EasySwoole\Component\Timer;
-use EasySwoole\EasySwoole\Command\CommandInterface;
 use EasySwoole\ORM\Db\Connection;
 use EasySwoole\Utility\ArrayToTextTable;
 use Swoole\Coroutine\Scheduler;
