@@ -92,18 +92,15 @@ class GenerationCommand implements CommandInterface
         $codeGeneration = new CodeGeneration($tableName, $connection);
         $this->trySetDiGenerationPath($codeGeneration);
         $table = [];
-        if ($modelPath) {
-            $filePath = $codeGeneration->generationModel($modelPath);
-            $table[] = ['className' => 'Model', "filePath" => $filePath];
-        }
-        if ($controllerPath) {
-            $filePath = $codeGeneration->generationController($controllerPath);
-            $table[] = ['className' => 'controller', "filePath" => $filePath];
-        }
-        if ($unitTestPath) {
-            $filePath = $codeGeneration->generationUnitTest($unitTestPath);
-            $table[] = ['className' => 'UnitTest', "filePath" => $filePath];
-        }
+
+        $filePath = $codeGeneration->generationModel($modelPath);
+        $table[] = ['className' => 'Model', "filePath" => $filePath];
+
+        $filePath = $codeGeneration->generationController($controllerPath);
+        $table[] = ['className' => 'controller', "filePath" => $filePath];
+
+        $filePath = $codeGeneration->generationUnitTest($unitTestPath);
+        $table[] = ['className' => 'UnitTest', "filePath" => $filePath];
 
         return new ArrayToTextTable($table);
     }
