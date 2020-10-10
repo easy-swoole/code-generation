@@ -97,7 +97,7 @@ class GenerationCommand implements CommandInterface
         $table[] = ['className' => 'Model', "filePath" => $filePath];
 
         $filePath = $codeGeneration->generationController($controllerPath);
-        $table[] = ['className' => 'controller', "filePath" => $filePath];
+        $table[] = ['className' => 'Controller', "filePath" => $filePath];
 
         $filePath = $codeGeneration->generationUnitTest($unitTestPath);
         $table[] = ['className' => 'UnitTest', "filePath" => $filePath];
