@@ -82,7 +82,7 @@ class GenerationCommand implements CommandInterface
     {
         $tableName = CommandManager::getInstance()->getOpt('tableName');
         if (empty($tableName)) {
-            return Color::error("table not empty");
+            return Color::error('table not empty');
         }
 
         $modelPath = CommandManager::getInstance()->getOpt('modelPath');
@@ -91,14 +91,18 @@ class GenerationCommand implements CommandInterface
         $connection = $this->getConnection();
         $codeGeneration = new CodeGeneration($tableName, $connection);
         $this->trySetDiGenerationPath($codeGeneration);
+
         $table = [];
         if ($modelPath) {
             $filePath = $codeGeneration->generationModel($modelPath);
             $table[] = ['className' => 'Model', "filePath" => $filePath];
+        } else {
+            return Color::error('Model path must be specified');
         }
+
         if ($controllerPath) {
             $filePath = $codeGeneration->generationController($controllerPath);
-            $table[] = ['className' => 'controller', "filePath" => $filePath];
+            $table[] = ['className' => 'Controller', "filePath" => $filePath];
         }
         if ($unitTestPath) {
             $filePath = $codeGeneration->generationUnitTest($unitTestPath);

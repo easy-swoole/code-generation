@@ -46,8 +46,8 @@ class GetList extends MethodAbstract
 
         $methodBody = <<<Body
 \$param = ContextManager::getInstance()->get('param');
-\$page = (int)(\$param['page']??1);
-\$pageSize = (int)(\$param['pageSize']??20);
+\$page = (int)(\$param['page'] ?? 1);
+\$pageSize = (int)(\$param['pageSize'] ?? 20);
 \$model = new {$modelName}();
 \$data = \$model->getList(\$page, \$pageSize);
 \$this->writeJson(Status::CODE_OK, \$data, '获取列表成功');
