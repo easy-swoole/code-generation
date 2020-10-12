@@ -10,11 +10,13 @@ easyswoole代码生成组件,可使用命令行,代码一键生成业务通用�
 
 
 ## 安装
+
 ```bash
 composer require easyswoole/code-generation
 ```
 
 ## 使用
+
 ```php
 <?php
 /**
@@ -23,6 +25,7 @@ composer require easyswoole/code-generation
  * Date: 2020-05-20
  * Time: 10:26
  */
+
 include "./vendor/autoload.php";
 \EasySwoole\EasySwoole\Core::getInstance()->initialize()->globalInitialize();
 
@@ -56,11 +59,10 @@ go(function () {
 `EasySwoole\CodeGeneration\CodeGeneration` 方法可自行查看,代码很简单.  
 ::: 
 
-
-## 命令行使用.
-由于命令行特性,命令行功能支持并不完善,如果需要体验全部功能,请使用 `EasySwoole\CodeGeneration\CodeGeneration` 生成,或参考`EasySwoole\CodeGeneration\CodeGeneration`代码生成.
 ### 注册命令
+
 在`bootstrap事件`Di注入配置项:
+
 ```php
 <?php
 /**
@@ -86,27 +88,46 @@ $connection = new \EasySwoole\ORM\Db\Connection($mysqlConfig);
 \EasySwoole\Component\Di::getInstance()->set('CodeGeneration.controllerBaseNameSpace',"App\\HttpController");
 \EasySwoole\Component\Di::getInstance()->set('CodeGeneration.unitTestBaseNameSpace',"UnitTest");
 \EasySwoole\Component\Di::getInstance()->set('CodeGeneration.rootPath',getcwd());
-\EasySwoole\EasySwoole\Command\CommandRunner::getInstance()->commandContainer()->set(new \EasySwoole\CodeGeneration\GenerationCommand());
 ```
-即可使用命令生成.  
+
+执行命令:
+
 ```bash
-php easyswoole generation
-  ______                          _____                              _
- |  ____|                        / ____|                            | |
- | |__      __ _   ___   _   _  | (___   __      __   ___     ___   | |   ___
- |  __|    / _` | / __| | | | |  \___ \  \ \ /\ / /  / _ \   / _ \  | |  / _ \
- | |____  | (_| | \__ \ | |_| |  ____) |  \ V  V /  | (_) | | (_) | | | |  __/
- |______|  \__,_| |___/  \__, | |_____/    \_/\_/    \___/   \___/  |_|  \___|
-                          __/ |
-                         |___/
-
-php easyswoole generator all tableName modelPath [controllerPath] [unitTestPath]
-php easyswoole generator init
-
-php easyswoole generator all user_list \\User \\Api\\\User \\User
-
+php vendor/bin/code-generator
 ```
 
+初始化:
+
+```bash
+php vendor/bin/code-generator init
+```
+
+自定义:
+
+```bash
+php vendor/bin/code-generator all
+```
+
+参数：
+- --tableName 必须指定  
+- --modelPath 必须指定 模型   
+- --controllerPath 控制器  
+- --unitTestPath 单元测试
+
+示例：
+
+```bash
+$ php vendor/bin/code-generator all --tableName=test_a --modelPath=\\Api --controllerPath=\\Api --unitTestPath=\\Api
+┌────────────┬────────────────────────────────────────────────────────────────────────────┐
+│ className  │                                  filePath                                  │
+├────────────┼────────────────────────────────────────────────────────────────────────────┤
+│ Model      │ /Users/gaobinzhan/Documents/Git/Framework/App/Model/Api/TestAModel.php     │
+├────────────┼────────────────────────────────────────────────────────────────────────────┤
+│ Controller │ /Users/gaobinzhan/Documents/Git/Framework/App/HttpController/Api/TestA.php │
+├────────────┼────────────────────────────────────────────────────────────────────────────┤
+│ UnitTest   │ /Users/gaobinzhan/Documents/Git/Framework/UnitTest/Api/TestATest.php       │
+└────────────┴────────────────────────────────────────────────────────────────────────────┘
+```
 
 ## 独立使用
 ### 生成器流程说明

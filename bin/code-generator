@@ -7,9 +7,10 @@ require_once getcwd() . '/bootstrap.php';
 $command = new \EasySwoole\CodeGeneration\GenerationCommand();
 \EasySwoole\Command\CommandManager::getInstance()->addCommand($command);
 
+array_splice($argv, 1, 0, $command->commandName());
 $caller = new \EasySwoole\Command\Caller();
 $caller->setScript(current($argv));
-$caller->setCommand($command->commandName());
+$caller->setCommand(next($argv));
 $caller->setParams($argv);
 reset($argv);
 echo \EasySwoole\Command\CommandManager::getInstance()->run($caller);

@@ -46,11 +46,12 @@ class Config
      */
     public function getDirectory()
     {
-        if (empty($this->directory)&&!empty($this->getNamespace())){
+        if (empty($this->directory) && !empty($this->getNamespace())) {
             //设置下基础目录
             $pathArr = explode('\\', $this->getNamespace());
             $app = array_shift($pathArr);
-            $this->setDirectory($this->getRootPath() . '/' . Unity::getNamespacePath($this->getRootPath(), $app) . implode('/', $pathArr));
+
+            $this->setDirectory(rtrim($this->getRootPath() . '/' . Unity::getNamespacePath($this->getRootPath(), $app) . implode('/', $pathArr), '/'));
         }
         return $this->directory;
     }
@@ -101,7 +102,7 @@ class Config
      */
     public function getRootPath()
     {
-        if (empty($this->rootPath)){
+        if (empty($this->rootPath)) {
             $this->rootPath = getcwd();
         }
         return $this->rootPath;
