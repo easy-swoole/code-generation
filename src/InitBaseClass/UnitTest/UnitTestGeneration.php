@@ -51,7 +51,12 @@ class UnitTestGeneration extends ClassGeneration
 
     protected function addSetUp()
     {
+        // 由于$isInit是一个静态变量，
+        //运行第一个function的时候 setup初始化确实没问题
+        //但是到后续function test时，由于$isInit == 1 return;并不会再次new curl()；
+        //此时$this->curl 在上个function test用完已经销毁 再次调用post()就会触发 Error: Call to a member function post() on null
         $this->phpClass->addMethod('setUp')->setReturnType('void')->setProtected()->setBody(<<<BODY
+\$this->curl = new Curl();
 if (self::\$isInit == 1) {
     return;
 }
@@ -60,7 +65,6 @@ defined('EASYSWOOLE_ROOT') or define('EASYSWOOLE_ROOT', dirname(__FILE__, 2));
 require_once dirname(__FILE__, 2) . '/EasySwooleEvent.php';
 Core::getInstance()->initialize();
 self::\$isInit = 1;
-\$this->curl = new Curl();
 BODY
         );
     }
