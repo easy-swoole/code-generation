@@ -39,7 +39,7 @@ abstract class UnitTestMethod extends MethodAbstract
                 return false;
             }
             $value = $this->randColumnTypeValue($column);
-            $data .= "\${$variableName}['{$columnName}'] = '{$value}';\n";
+            $data .= "\${$variableName}['{$columnName}'] = {$value};\n";
         });
         return $data;
     }
@@ -51,23 +51,23 @@ abstract class UnitTestMethod extends MethodAbstract
         switch ($columnType) {
             case "int":
                 if ($column->getColumnLimit() <= 3) {
-                    $value = mt_rand(0, 3);
+                    $value = 'mt_rand(0, 3)';
                 } else {
-                    $value = mt_rand(10000, 99999);
+                    $value = "mt_rand(10000, 99999)";
                 }
                 break;
             case "float":
                 if ($column->getColumnLimit() <= 3) {
-                    $value = mt_rand(10, 30) / 10;
+                    $value = "mt_rand(10, 30) / 10";
                 } else {
-                    $value = mt_rand(100000, 999999) / 10;
+                    $value = "mt_rand(100000, 999999) / 10";
                 }
                 break;
             case "string":
-                $value = '测试文本' . Random::character(6);
+                $value = '"测试文本".' . "Random::character(6)";
                 break;
             case "mixed":
-                $value = null;
+                $value = "null";
                 break;
         }
         return $value;

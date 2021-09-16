@@ -15,6 +15,7 @@ use EasySwoole\CodeGeneration\UnitTest\Method\GetList;
 use EasySwoole\CodeGeneration\UnitTest\Method\GetOne;
 use EasySwoole\CodeGeneration\UnitTest\Method\Update;
 use EasySwoole\CodeGeneration\Utility\Utility;
+use EasySwoole\Utility\Random;
 use Nette\PhpGenerator\ClassType;
 
 class UnitTestGeneration extends ClassGeneration
@@ -28,6 +29,7 @@ class UnitTestGeneration extends ClassGeneration
     {
         $this->phpClass->addProperty('modelName', $this->getApiUrl());
         $this->phpNamespace->addUse($this->config->getModelClass());
+        $this->phpNamespace->addUse(Random::class);
         $this->addGenerationMethod(new Add($this));
         $this->addGenerationMethod(new GetOne($this));
         $this->addGenerationMethod(new Update($this));
