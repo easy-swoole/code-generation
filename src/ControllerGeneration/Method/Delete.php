@@ -49,6 +49,7 @@ class Delete extends MethodAbstract
 \$info = \$model->get(['{$table->getPkFiledName()}' => \$param['{$table->getPkFiledName()}']]);
 if (!\$info) {
     \$this->writeJson(Status::CODE_OK, \$info, "数据不存在.");
+    return false;
 }
 
 \$info->destroy();

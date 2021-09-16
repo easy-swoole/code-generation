@@ -9,7 +9,7 @@
 namespace EasySwoole\CodeGeneration\UnitTest\Method;
 
 
-use EasySwoole\CodeGeneration\Unity\Unity;
+use EasySwoole\CodeGeneration\Utility\Utility;
 
 class Update extends UnitTestMethod
 {
@@ -24,7 +24,7 @@ class Update extends UnitTestMethod
 BODY;
         $body .= $this->getTableTestData('data');
 
-        $modelName = Unity::getModelName($this->classGeneration->getConfig()->getModelClass());
+        $modelName = Utility::getModelName($this->classGeneration->getConfig()->getModelClass());
         $body .= <<<BODY
 \$model = new {$modelName}();
 \$model->data(\$data)->save();    

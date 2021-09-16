@@ -6,12 +6,12 @@
  * Time: 下午9:05
  */
 
-namespace EasySwoole\CodeGeneration\Unity;
+namespace EasySwoole\CodeGeneration\Utility;
 
 
 use EasySwoole\ORM\Utility\Schema\Table;
 
-class Unity
+class Utility
 {
     static function getNamespacePath($rootPath, $namespace)
     {

@@ -10,7 +10,7 @@ namespace EasySwoole\CodeGeneration\UnitTest\Method;
 
 use EasySwoole\CodeGeneration\ClassGeneration\MethodAbstract;
 use EasySwoole\CodeGeneration\UnitTest\UnitTestGeneration;
-use EasySwoole\CodeGeneration\Unity\Unity;
+use EasySwoole\CodeGeneration\Utility\Utility;
 use EasySwoole\ORM\Utility\Schema\Column;
 use EasySwoole\Utility\Random;
 
@@ -34,7 +34,7 @@ abstract class UnitTestMethod extends MethodAbstract
     {
         $data = '';
 
-        Unity::chunkTableColumn($this->classGeneration->getConfig()->getTable(), function (Column $column, string $columnName) use (&$data, $variableName) {
+        Utility::chunkTableColumn($this->classGeneration->getConfig()->getTable(), function (Column $column, string $columnName) use (&$data, $variableName) {
             if ($columnName == $this->classGeneration->getConfig()->getTable()->getPkFiledName()) {
                 return false;
             }
@@ -46,7 +46,7 @@ abstract class UnitTestMethod extends MethodAbstract
 
     protected function randColumnTypeValue(Column $column)
     {
-        $columnType = Unity::convertDbTypeToDocType($column->getColumnType());
+        $columnType = Utility::convertDbTypeToDocType($column->getColumnType());
         $value = null;
         switch ($columnType) {
             case "int":

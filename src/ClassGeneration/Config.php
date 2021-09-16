@@ -8,7 +8,7 @@
 
 namespace EasySwoole\CodeGeneration\ClassGeneration;
 
-use EasySwoole\CodeGeneration\Unity\Unity;
+use EasySwoole\CodeGeneration\Utility\Utility;
 
 class Config
 {
@@ -51,7 +51,7 @@ class Config
             $pathArr = explode('\\', $this->getNamespace());
             $app = array_shift($pathArr);
 
-            $this->setDirectory(rtrim($this->getRootPath() . '/' . Unity::getNamespacePath($this->getRootPath(), $app) . implode('/', $pathArr), '/'));
+            $this->setDirectory(rtrim($this->getRootPath() . '/' . Utility::getNamespacePath($this->getRootPath(), $app) . implode('/', $pathArr), '/'));
         }
         return $this->directory;
     }

@@ -14,7 +14,7 @@ use EasySwoole\CodeGeneration\UnitTest\Method\Del;
 use EasySwoole\CodeGeneration\UnitTest\Method\GetList;
 use EasySwoole\CodeGeneration\UnitTest\Method\GetOne;
 use EasySwoole\CodeGeneration\UnitTest\Method\Update;
-use EasySwoole\CodeGeneration\Unity\Unity;
+use EasySwoole\CodeGeneration\Utility\Utility;
 use Nette\PhpGenerator\ClassType;
 
 class UnitTestGeneration extends ClassGeneration

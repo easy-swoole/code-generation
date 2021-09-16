@@ -9,7 +9,7 @@
 namespace EasySwoole\CodeGeneration\UnitTest\Method;
 
 
-use EasySwoole\CodeGeneration\Unity\Unity;
+use EasySwoole\CodeGeneration\Utility\Utility;
 
 class GetList extends UnitTestMethod
 {
@@ -18,7 +18,7 @@ class GetList extends UnitTestMethod
     function addMethodBody()
     {
         $method = $this->method;
-        $modelName = Unity::getModelName($this->classGeneration->getConfig()->getModelClass());
+        $modelName = Utility::getModelName($this->classGeneration->getConfig()->getModelClass());
         $body = <<<BODY
 \$model = new {$modelName}();
 \$data = [];

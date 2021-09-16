@@ -50,11 +50,7 @@ class GetOne extends MethodAbstract
 \$param = ContextManager::getInstance()->get('param');
 \$model = new {$modelName}();
 \$info = \$model->get(['{$table->getPkFiledName()}' => \$param['{$table->getPkFiledName()}']]);
-if (\$info) {
-    \$this->writeJson(Status::CODE_OK, \$info, "获取数据成功.");
-} else {
-    \$this->writeJson(Status::CODE_BAD_REQUEST, [], '数据不存在');
-}
+\$this->writeJson(Status::CODE_OK, \$info, "获取数据成功.");
 Body;
         $method->setBody($methodBody);
 
