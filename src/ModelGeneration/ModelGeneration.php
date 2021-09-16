@@ -9,8 +9,9 @@
 namespace EasySwoole\CodeGeneration\ModelGeneration;
 
 use EasySwoole\CodeGeneration\ClassGeneration\ClassGeneration;
+use EasySwoole\CodeGeneration\ModelGeneration\Method\AddData;
 use EasySwoole\CodeGeneration\ModelGeneration\Method\GetList;
-use EasySwoole\CodeGeneration\Unity\Unity;
+use EasySwoole\CodeGeneration\Utility\Utility;
 use Nette\PhpGenerator\ClassType;
 
 class ModelGeneration extends ClassGeneration
@@ -24,6 +25,7 @@ class ModelGeneration extends ClassGeneration
     {
         $this->addClassBaseContent();
         $this->addGenerationMethod(new GetList($this));
+        $this->addGenerationMethod(new AddData($this));
     }
 
     /**
@@ -42,7 +44,7 @@ class ModelGeneration extends ClassGeneration
         foreach ($table->getColumns() as $column) {
             $name = $column->getColumnName();
             $comment = $column->getColumnComment();
-            $columnType = Unity::convertDbTypeToDocType($column->getColumnType());
+            $columnType = Utility::convertDbTypeToDocType($column->getColumnType());
             $phpClass->addComment("@property {$columnType} \${$name} // {$comment}");
         }
         return $phpClass;

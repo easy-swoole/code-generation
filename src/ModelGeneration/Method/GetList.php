@@ -9,10 +9,6 @@
 namespace EasySwoole\CodeGeneration\ModelGeneration\Method;
 
 
-
-
-use EasySwoole\CodeGeneration\ClassGeneration\MethodAbstract;
-
 class GetList extends MethodAbstract
 {
     function addMethodBody()

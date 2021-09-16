@@ -36,6 +36,9 @@ class Add extends MethodAbstract
 Body;
         $this->chunkTableColumn(function (Column $column, string $columnName) use (&$methodBody) {
             $paramValue = $this->newColumnParam($column);
+            if ($column->getIsAutoIncrement()){
+                return false;
+            }
             if ($column->isNotNull()) {
                 $paramValue->required = '';
                 $methodBody .= "    '{$columnName}'=>\$param['{$columnName}'],\n";

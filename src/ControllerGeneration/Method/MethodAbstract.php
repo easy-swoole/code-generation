@@ -11,6 +11,7 @@ namespace EasySwoole\CodeGeneration\ControllerGeneration\Method;
 
 use EasySwoole\CodeGeneration\ControllerGeneration\ControllerConfig;
 use EasySwoole\CodeGeneration\ControllerGeneration\ControllerGeneration;
+use EasySwoole\DDL\Blueprint\Create\Index;
 use EasySwoole\HttpAnnotation\AnnotationTag\Param;
 use EasySwoole\ORM\Utility\Schema\Column;
 
@@ -147,6 +148,22 @@ abstract class MethodAbstract extends \EasySwoole\CodeGeneration\ClassGeneration
         foreach ($table->getColumns() as $column) {
             $columnName = $column->getColumnName();
             $result = $callback($column, $columnName);
+            if ($result ===true){
+                break;
+            }
+        }
+    }
+
+    protected function chunkTableIndex(callable $callback)
+    {
+        $table = $this->controllerConfig->getTable();
+        /**
+         * @var $index Index
+         */
+        foreach ($table->getIndexes() as $index) {
+            //程序的逻辑只会存在一个索引
+            $columnName = $index->getIndexColumns();
+            $result = $callback($table->getColumns()[$columnName], $columnName);
             if ($result ===true){
                 break;
             }

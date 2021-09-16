@@ -36,6 +36,19 @@ class GetList extends MethodAbstract
         $method->addComment("@Param(name=\"page\", from={GET,POST}, alias=\"页数\", optional=\"\")");
         $method->addComment("@Param(name=\"pageSize\", from={GET,POST}, alias=\"每页总数\", optional=\"\")");
 
+        //新增索引搜索条件
+        $searchModelWhereBody = '';
+        $this->chunkTableIndex(function (Column $column, string $columnName) use (&$searchModelWhereBody,$method) {
+            $method->addComment("@Param(name=\"{$columnName}\", from={GET,POST}, alias=\"{$column->getColumnComment()}\", description=\"{$column->getColumnComment()}\", optional=\"\")");
+            $searchModelWhereBody.=<<<Body
+if (isset(\$param['$columnName'])) {
+    \$model->where('$columnName', \$param['$columnName']);
+}
+Body;
+
+            return false;
+        });
+
         $responseParamComment = [];
         $this->chunkTableColumn(function (Column $column, string $columnName) use (&$responseParamComment) {
             $responseParamName = "result[].{$columnName}";
@@ -49,6 +62,7 @@ class GetList extends MethodAbstract
 \$page = (int)(\$param['page'] ?? 1);
 \$pageSize = (int)(\$param['pageSize'] ?? 20);
 \$model = new {$modelName}();
+$searchModelWhereBody
 \$data = \$model->getList(\$page, \$pageSize);
 \$this->writeJson(Status::CODE_OK, \$data, '获取列表成功');
 Body;
